@@ -6,6 +6,13 @@ import (
 )
 
 func main() {
-	logMsg := polvo.Log("openat", 1234, 2345, "asdf...xyz")
+	pid := 123
+	uid := 4567
+
+	logMsg, err := polvo.Log("sensor-example", &pid, &uid, "This is a test log message.")
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
 	fmt.Println(logMsg)
 }
