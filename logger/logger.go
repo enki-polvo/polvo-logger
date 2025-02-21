@@ -6,9 +6,9 @@ import (
 	"time"
 )
 
-// Creates a formatted log message.
+// BuildLog creates a formatted log message string.
 // PID and UID are optional depending on the POLVO sensor's situation, so they can be nil.
-func Log(eventName string, pid *int, uid *int, eventLog string) (string, error) {
+func BuildLog(eventName string, pid *int, uid *int, eventLog string) (string, error) {
 	// Validate the values
 	if eventName == "" {
 		return "", errors.New("eventName cannot be empty")
@@ -42,4 +42,15 @@ func Log(eventName string, pid *int, uid *int, eventLog string) (string, error) 
 	// Create the formatted log message
 	logMsg := fmt.Sprintf("[%s] [%s] (pid=%s, uid=%s) => %s", currentTime, eventName, pidStr, uidStr, eventLog)
 	return logMsg, nil
+}
+
+// PrintLog prints the formatted log message to the console.
+func PrintLog(eventName string, pid *int, uid *int, eventLog string) error {
+	logMsg, err := BuildLog(eventName, pid, uid, eventLog)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(logMsg)
+	return nil
 }

@@ -2,17 +2,25 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/enki-polvo/polvo-logger/logger"
 )
 
 func main() {
-	pid := 123
-	uid := 4567
+	pid := 1234
+	uid := 2345
 
-	logMsg, err := polvo.Log("sensor-example", &pid, &uid, "This is a test log message.")
+	// Get the formatted log string
+	logMsg, err := polvo.BuildLog("openat", &pid, &uid, "asdf...xyz")
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
 	}
-	fmt.Println(logMsg)
+	fmt.Println("BuildLog output:", logMsg)
+
+	// Directly print the log message to the console
+	err = polvo.PrintLog("openat", &pid, &uid, "asdf...xyz")
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
 }
