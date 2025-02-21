@@ -36,7 +36,7 @@ func (ec ExecutionContext) ToMap() map[string]interface{} {
 
 // BuildLog constructs the log message in the unified format.
 // The resulting format is:
-// [timestamp] [source => eventName] [eventLog] [metadata]
+// [timestamp] [eventName@source] [eventLog] [metadata]
 func BuildLog(source, eventName, eventLog string, metadata map[string]interface{}) (string, error) {
 	// Validate required fields.
 	if source == "" {
