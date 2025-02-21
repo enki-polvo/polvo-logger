@@ -7,19 +7,29 @@ import (
 )
 
 func main() {
-	pid := 1234
-	uid := 2345
+	// Example using ProcessInfo helper.
+	executionContent := logger.ExecutionContext{
+		PID:         1234,
+		UID:         2345,
+		ProcessName: "myapp",
+		UserName:    "alice",
+	}
+	// Convert ProcessInfo to metadata map.
+	metadata := executionContent.ToMap()
 
-	// Get the formatted log string
-	logMsg, err := polvo.BuildLog("openat", &pid, &uid, "asdf...xyz")
+	// Log an event from an eBPF source.
+	logMsg, err := logger.Log("eBPF", "openat", "File descriptor opened successfully", metadata)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
 	}
-	fmt.Println("BuildLog output:", logMsg)
+	fmt.Println("Log message:", logMsg)
 
-	// Directly print the log message to the console
-	err = polvo.PrintLog("openat", &pid, &uid, "asdf...xyz")
+	// Directly print a network event.
+	err = logger.PrintLog("libpcap", "connect", "Established connection to 192.168.1.100:80", map[string]interface{}{
+		"ip":   "192.168.1.100",
+		"port": 80,
+	})
 	if err != nil {
 		fmt.Println("Error:", err)
 	}
