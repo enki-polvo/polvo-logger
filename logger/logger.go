@@ -7,36 +7,16 @@ import (
 	"time"
 )
 
-// ExecutionContext holds common process-related details.
-type ExecutionContext struct {
-	PID         int    `json:"pid,omitempty"`
-	UID         int    `json:"uid,omitempty"`
-	ProcessName string `json:"process_name,omitempty"`
-	UserName    string `json:"user_name,omitempty"`
-}
-
-// ToMap converts ExecutionContext into a metadata map.
-// Fields that have a zero value are omitted.
-func (ec ExecutionContext) ToMap() map[string]interface{} {
-	metadata := make(map[string]interface{})
-	if ec.PID > 0 {
-		metadata["pid"] = ec.PID
-	}
-	if ec.UID > 0 {
-		metadata["uid"] = ec.UID
-	}
-	if ec.ProcessName != "" {
-		metadata["process_name"] = ec.ProcessName
-	}
-	if ec.UserName != "" {
-		metadata["user_name"] = ec.UserName
-	}
-	return metadata
-}
-
-// BuildLog constructs the log message in the unified format.
+// BuildLog constructs the log message in the unified JSON format.
 // The resulting format is:
-// [timestamp] [eventName@source] [eventLog] [metadata]
+//
+//	{
+//	  "eventname": "<eventName>",
+//	  "source": "<source>",
+//	  "timestamp": "<timestamp>",
+//	  "log": "<eventLog>",
+//	  "metadata": {<metadata JSON>}
+//	}
 func BuildLog(source, eventName, eventLog string, metadata map[string]interface{}) (string, error) {
 	// Validate required fields.
 	if source == "" {
@@ -62,8 +42,9 @@ func BuildLog(source, eventName, eventLog string, metadata map[string]interface{
 		metadataStr = string(bytes)
 	}
 
-	// Build the unified log message.
-	logMsg := fmt.Sprintf("[%s@%s] [%s] [%s] [%s]", eventName, source, timestamp, eventLog, metadataStr)
+	// Build the unified log message in JSON format.
+	logMsg := fmt.Sprintf("{\"eventname\": \"%s\",\n \"source\": \"%s\",\n \"timestamp\": \"%s\",\n \"log\": \"%s\",\n \"metadata\": %s\n}",
+		eventName, source, timestamp, eventLog, metadataStr)
 	return logMsg, nil
 }
 
