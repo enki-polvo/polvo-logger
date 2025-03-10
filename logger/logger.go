@@ -7,58 +7,65 @@ import (
 	"time"
 )
 
-// BuildLog constructs the log message in the unified JSON format.
-// The resulting format is:
-//
-//	{
-//	  "eventname": "<eventName>",
-//	  "source": "<source>",
-//	  "timestamp": "<timestamp>",
-//	  "log": "<eventLog>",
-//	  "metadata": {<metadata JSON>}
-//	}
-func BuildLog(source, eventName, eventLog string, metadata map[string]interface{}) (string, error) {
+// LogMessage defines the unified log message structure.
+type LogMessage struct {
+	EventName string                 `json:"eventname"`
+	Source    string                 `json:"source"`
+	Timestamp string                 `json:"timestamp"`
+	Log       string                 `json:"log"`
+	Metadata  map[string]interface{} `json:"metadata"`
+}
+
+// BuildLog constructs the log message using a structured type.
+func BuildLog(source, eventName, eventLog string, metadata map[string]interface{}) (*LogMessage, error) {
 	// Validate required fields.
 	if source == "" {
-		return "", errors.New("source cannot be empty")
+		return nil, errors.New("source cannot be empty")
 	}
 	if eventName == "" {
-		return "", errors.New("eventName cannot be empty")
+		return nil, errors.New("eventName cannot be empty")
 	}
 	if eventLog == "" {
-		return "", errors.New("eventLog cannot be empty")
+		return nil, errors.New("eventLog cannot be empty")
 	}
 
-	// Generate timestamp.
-	timestamp := time.Now().Format(time.RFC3339)
-
-	// Convert metadata to JSON string.
-	metadataStr := "{}"
-	if metadata != nil {
-		bytes, err := json.Marshal(metadata)
-		if err != nil {
-			return "", fmt.Errorf("failed to marshal metadata: %v", err)
-		}
-		metadataStr = string(bytes)
-	}
-
-	// Build the unified log message in JSON format.
-	logMsg := fmt.Sprintf("{\"eventname\": \"%s\",\n \"source\": \"%s\",\n \"timestamp\": \"%s\",\n \"log\": \"%s\",\n \"metadata\": %s\n}",
-		eventName, source, timestamp, eventLog, metadataStr)
-	return logMsg, nil
+	return &LogMessage{
+		EventName: eventName,
+		Source:    source,
+		Timestamp: time.Now().Format(time.RFC3339),
+		Log:       eventLog,
+		Metadata:  metadata,
+	}, nil
 }
 
-// Log returns the unified log message string based on the provided parameters.
-func Log(source, eventName, eventLog string, metadata map[string]interface{}) (string, error) {
-	return BuildLog(source, eventName, eventLog, metadata)
-}
-
-// PrintLog prints the unified log message to the console.
-func PrintLog(source, eventName, eventLog string, metadata map[string]interface{}) error {
+// PrintLog prints the unified log message as a one-line JSON string.
+func PrintLog(source, eventName, eventLog string, metadata map[string]interface{}) {
 	logMsg, err := BuildLog(source, eventName, eventLog, metadata)
 	if err != nil {
-		return err
+		fmt.Println("Error:", err)
+		return
 	}
-	fmt.Println(logMsg)
-	return nil
+	// Marshal without indent (one-line)
+	b, err := json.Marshal(logMsg)
+	if err != nil {
+		fmt.Println("Error marshalling JSON:", err)
+		return
+	}
+	fmt.Println(string(b))
+}
+
+// PrintLogPretty prints the unified log message as a pretty-printed JSON.
+func PrintLogPretty(source, eventName, eventLog string, metadata map[string]interface{}) {
+	logMsg, err := BuildLog(source, eventName, eventLog, metadata)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	// Marshal with indentation for pretty printing
+	b, err := json.MarshalIndent(logMsg, "", "  ")
+	if err != nil {
+		fmt.Println("Error marshalling JSON:", err)
+		return
+	}
+	fmt.Println(string(b))
 }
