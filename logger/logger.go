@@ -32,7 +32,7 @@ func BuildLog(source, eventName, eventLog string, metadata map[string]interface{
 	return &LogMessage{
 		EventName: eventName,
 		Source:    source,
-		Timestamp: time.Now().Format(time.RFC3339),
+		Timestamp: time.Now().Format("2006-01-02T15:04:05.000000Z07:00"),
 		Log:       eventLog,
 		Metadata:  metadata,
 	}, nil
