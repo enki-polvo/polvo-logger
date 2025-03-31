@@ -15,20 +15,16 @@ func main() {
 		"user_name":    "alice",
 	}
 
-	// Toggle pretty print. Set to false to print in a single line.
-	pretty := true
+	// Test 1: Using an empty timestamp string (auto-fills current time)
+	emptyTimestamp := ""
+	fmt.Println("Test 1: Logger with empty timestamp (auto current time):")
+	logger.PrintLogPretty("eBPF", "openat", "File descriptor opened successfully", emptyTimestamp, metadata)
 
-	if pretty {
-		fmt.Println("Log message (pretty printed):")
-		logger.PrintLogPretty("eBPF", "openat", "File descriptor opened successfully", metadata)
-	} else {
-		fmt.Println("Log message (one-liner):")
-		logger.PrintLog("eBPF", "openat", "File descriptor opened successfully", metadata)
-	}
-
-	// Directly print a network event in one-line format.
-	fmt.Println("Network event log (one-liner):")
-	logger.PrintLog("libpcap", "connect", "Established connection to 192.168.1.100:80", map[string]interface{}{
+	// Test 2: Using a valid timestamp string
+	// Note: This valid timestamp must match the layout "2006-01-02T15:04:05.000000Z07:00".
+	customTimestamp := "2004-09-26T12:34:56.123456+00:00"
+	fmt.Println("\nTest 2: Logger with valid timestamp:")
+	logger.PrintLog("libpcap", "connect", "Established connection to 192.168.1.100:80", customTimestamp, map[string]interface{}{
 		"ip":   "192.168.1.100",
 		"port": 80,
 	})
