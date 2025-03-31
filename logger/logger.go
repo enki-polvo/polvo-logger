@@ -19,7 +19,7 @@ type LogMessage struct {
 // BuildLog constructs the log message using a structured type.
 // The 'timestamp' parameter is optional. If it's an empty string, the current time is used.
 // Otherwise, it will be accepted if it matches one of the allowed layouts.
-func BuildLog(source, eventName, eventLog, timestamp string, metadata map[string]interface{}) (*LogMessage, error) {
+func BuildLog(source, eventName, eventLog, timestampStr string, metadata map[string]interface{}) (*LogMessage, error) {
 	// Validate required fields.
 	if source == "" {
 		return nil, errors.New("source cannot be empty")
@@ -39,12 +39,12 @@ func BuildLog(source, eventName, eventLog, timestamp string, metadata map[string
 	}
 
 	// If no timestamp provided, use current time.
-	if timestamp == "" {
-		timestamp = time.Now().Format(layouts[0])
+	if timestampStr == "" {
+		timestampStr = time.Now().Format(layouts[0])
 	} else {
 		valid := false
 		for _, layout := range layouts {
-			if _, err := time.Parse(layout, timestamp); err == nil {
+			if _, err := time.Parse(layout, timestampStr); err == nil {
 				valid = true
 				break
 			}
@@ -57,7 +57,7 @@ func BuildLog(source, eventName, eventLog, timestamp string, metadata map[string
 	return &LogMessage{
 		EventName: eventName,
 		Source:    source,
-		Timestamp: timestamp,
+		Timestamp: timestampStr,
 		Log:       eventLog,
 		Metadata:  metadata,
 	}, nil
