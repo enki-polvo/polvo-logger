@@ -50,7 +50,7 @@ func BuildLog(source, eventName, eventLog, timestampStr string, metadata map[str
 			}
 		}
 		if !valid {
-			return nil, errors.New("invalid timestamp format")
+			return nil, errors.New("invalid timestamp string format, only RFC3339 and its variations are accepted")
 		}
 	}
 
