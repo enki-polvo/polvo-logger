@@ -6,19 +6,17 @@ package model
 
 import "time"
 
-type Event string
-
 const (
-	PROC_CREATE        Event = "ProcessCreate"
-	PROC_TERMINATE     Event = "ProcessTerminate"
-	PROC_BASH_READLINE Event = "BashReadline"
+	PROC_CREATE        string = "ProcessCreate"
+	PROC_TERMINATE     string = "ProcessTerminate"
+	PROC_BASH_READLINE string = "BashReadline"
 )
 
 // ## CommonHeader
 //
 // CommonHeader defines the common header structure for all events.
 type CommonHeader struct {
-	EventName Event     `json:"Eventname"` // example: "ProcessCreate"
+	EventName string    `json:"Eventname"` // example: "ProcessCreate"
 	Source    string    `json:"Source"`    // example: "eBPF"
 	Timestamp time.Time `json:"Timestamp"` // example: "2023-10-01T12:00:00Z"
 }
