@@ -6,11 +6,26 @@ package model
 
 import "time"
 
+type Event int
+
 const (
-	PROC_CREATE        string = "ProcessCreate"
-	PROC_TERMINATE     string = "ProcessTerminate"
-	PROC_BASH_READLINE string = "BashReadline"
+	PROC_CREATE Event = iota
+	PROC_TERMINATE
+	PROC_BASH_READLINE
 )
+
+func (e Event) String() string {
+	switch e {
+	case PROC_CREATE:
+		return "ProcessCreate"
+	case PROC_TERMINATE:
+		return "ProcessTerminate"
+	case PROC_BASH_READLINE:
+		return "BashReadline"
+	default:
+		return "UnknownEvent"
+	}
+}
 
 // ## CommonHeader
 //
