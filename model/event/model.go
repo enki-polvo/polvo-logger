@@ -4,17 +4,28 @@
 // Copyright (c) 2025, ENKI, Inc Polvo
 package model
 
-import "time"
+import (
+	"time"
+)
 
-type Event int
+// # EventCode
+//
+// EventCode defines the event code type.
+type EventCode int
+
+// # Event
+//
+// Event defines the interface for all event types.
+type Event interface{}
 
 const (
-	PROC_CREATE Event = iota
+	// Event codes
+	PROC_CREATE EventCode = iota
 	PROC_TERMINATE
 	PROC_BASH_READLINE
 )
 
-func (e Event) String() string {
+func (e EventCode) String() string {
 	switch e {
 	case PROC_CREATE:
 		return "ProcessCreate"
@@ -23,7 +34,7 @@ func (e Event) String() string {
 	case PROC_BASH_READLINE:
 		return "BashReadline"
 	default:
-		return "UnknownEvent"
+		return ""
 	}
 }
 
