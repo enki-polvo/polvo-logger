@@ -5,7 +5,7 @@
 package model
 
 import (
-	"time"
+	commonModel "github.com/enki-polvo/polvo-logger/model"
 )
 
 // # EventCode
@@ -36,15 +36,6 @@ func (e EventCode) String() string {
 	default:
 		return ""
 	}
-}
-
-// ## CommonHeader
-//
-// CommonHeader defines the common header structure for all events.
-type CommonHeader struct {
-	EventName string    `json:"Eventname"` // example: "ProcessCreate"
-	Source    string    `json:"Source"`    // example: "eBPF"
-	Timestamp time.Time `json:"Timestamp"` // example: "2023-10-01T12:00:00Z"
 }
 
 /*************************************************************************
@@ -94,6 +85,41 @@ type BashReadlineMetadata struct {
 	Username string `json:"Username"` // example: "root"
 }
 
+// # ServiceMetadata
+//
+// ServiceMetadata defines the metadata structure for service events.
+type ServiceMetadata struct {
+	PID         int64  `json:"Pid"`         // example: 1234
+	UID         int64  `json:"Uid"`         // example: 1000
+	TTY         string `json:"Tty"`         // example: "pts/0"
+	Image       string `json:"Image"`       // example: "/usr/bin/bash"
+	Commandline string `json:"Commandline"` // example: "bash rm -rf /tmp"
+}
+
+// # TcpConnectMetadata
+//
+// TcpConnectMetadata defines the metadata structure for TCP connection events.
+type TcpConnectMetadata struct {
+	PID   int64  `json:"Pid"`   // example: 1234
+	DIP   string `json:"Dip"`   // example: "127.0.0.1"
+	Dport int64  `json:"Dport"` // example: 80
+	SIP   string `json:"Sip"`   // example: "127.0.0.1"
+	Sport int64  `json:"Sport"` // example: 80
+	Proto int64  `json:"Proto"` // example: 4
+}
+
+// # TcpDisconnectMetadata
+//
+// TcpDisconnectMetadata defines the metadata structure for TCP disconnection events.
+type TcpDisConnectMetadata struct {
+	PID   int64  `json:"Pid"`   // example: 1234
+	DIP   string `json:"Dip"`   // example: "127.0.0.1"
+	Dport int64  `json:"Dport"` // example: 80
+	SIP   string `json:"Sip"`   // example: "127.0.0.1"
+	Sport int64  `json:"Sport"` // example: 80
+	Proto int64  `json:"Proto"` // example: 4
+}
+
 /*************************************************************************
 * Event
 *************************************************************************/
@@ -102,7 +128,7 @@ type BashReadlineMetadata struct {
 //
 // ProcessCreateEvent defines the event structure for process creation events.
 type ProcessCreateEvent struct {
-	CommonHeader
+	commonModel.CommonHeader
 	Metadata ProcessCreateMetadata `json:"metadata"`
 }
 
@@ -110,7 +136,7 @@ type ProcessCreateEvent struct {
 //
 // ProcessTerminateEvent defines the event structure for process termination events.
 type ProcessTerminateEvent struct {
-	CommonHeader
+	commonModel.CommonHeader
 	Metadata ProcessTerminateMetadata `json:"metadata"`
 }
 
@@ -118,6 +144,30 @@ type ProcessTerminateEvent struct {
 //
 // BashReadlineEvent defines the event structure for bash readline events.
 type BashReadlineEvent struct {
-	CommonHeader
+	commonModel.CommonHeader
 	Metadata BashReadlineMetadata `json:"metadata"`
+}
+
+// # ServiceEvent
+//
+// ServiceEvent defines the event structure for service events.
+type ServiceEvent struct {
+	commonModel.CommonHeader
+	Metadata ServiceMetadata `json:"metadata"`
+}
+
+// # TcpConnectEvent
+//
+// TcpConnectEvent defines the event structure for TCP connection events.
+type TcpConnectEvent struct {
+	commonModel.CommonHeader
+	Metadata TcpConnectMetadata `json:"metadata"`
+}
+
+// # TcpDisConnectEvent
+//
+// TcpDisConnectEvent defines the event structure for TCP disconnection events.
+type TcpDisConnectEvent struct {
+	commonModel.CommonHeader
+	Metadata TcpDisConnectMetadata `json:"metadata"`
 }
