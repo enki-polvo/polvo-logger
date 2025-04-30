@@ -51,7 +51,7 @@ type ProcessEntityModel struct {
 type NetworkEntityModel struct {
 	CommonEntityModel
 	NumRRecvOps   int64 `json:"NumRRecvOps"`   // example: 100
-	NumWSentOps   int64 `json:"NumRSentOps"`   // example: 100
+	NumWSentOps   int64 `json:"NumWSentOps"`   // example: 100
 	NumRRecvBytes int64 `json:"NumRRecvBytes"` // example: 100
 	NumWSentBytes int64 `json:"NumWSentBytes"` // example: 100
 }

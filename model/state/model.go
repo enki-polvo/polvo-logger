@@ -4,7 +4,7 @@
 // Copyright (c) 2025, ENKI, Inc Polvo
 package model
 
-// State defines the state of an entitys and events.
+// State defines the state of an entities and events.
 type State int
 
 const (
