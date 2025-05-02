@@ -1,3 +1,5 @@
+// logger/logger.go
+
 package logger
 
 import (
@@ -9,24 +11,26 @@ import (
 
 // LogMessage defines the unified log message structure.
 type LogMessage struct {
-	EventName string                 `json:"eventname"`
-	Source    string                 `json:"source"`
-	Timestamp string                 `json:"timestamp"`
-	Log       string                 `json:"log"`
-	Metadata  map[string]interface{} `json:"metadata"`
+	EventName string         `json:"eventname"`
+	Source    string         `json:"source"`
+	Timestamp string         `json:"timestamp"`
+	Log       string         `json:"log"`
+	Metadata  map[string]any `json:"metadata"`
 }
 
 // BuildLog constructs the log message using a structured type.
 // The 'timestamp' parameter is optional. If it's an empty string, the current time is used.
 // Otherwise, it will be accepted if it matches one of the allowed layouts.
-func BuildLog(source, eventName, eventLog, timestampStr string, metadata map[string]interface{}) (*LogMessage, error) {
+func BuildLog(source, eventName, eventLog, timestampStr string, metadata map[string]any) (*LogMessage, error) {
 	// Validate required fields.
 	if source == "" {
 		return nil, errors.New("source cannot be empty")
 	}
+
 	if eventName == "" {
 		return nil, errors.New("eventName cannot be empty")
 	}
+
 	if eventLog == "" {
 		return nil, errors.New("eventLog cannot be empty")
 	}
@@ -64,7 +68,7 @@ func BuildLog(source, eventName, eventLog, timestampStr string, metadata map[str
 }
 
 // PrintLog prints the unified log message as a one-line JSON string.
-func PrintLog(source, eventName, eventLog, timestamp string, metadata map[string]interface{}) {
+func PrintLog(source, eventName, eventLog, timestamp string, metadata map[string]any) {
 	logMsg, err := BuildLog(source, eventName, eventLog, timestamp, metadata)
 	if err != nil {
 		fmt.Println("Error:", err)
@@ -79,7 +83,7 @@ func PrintLog(source, eventName, eventLog, timestamp string, metadata map[string
 }
 
 // PrintLogPretty prints the unified log message as a pretty-printed JSON.
-func PrintLogPretty(source, eventName, eventLog, timestamp string, metadata map[string]interface{}) {
+func PrintLogPretty(source, eventName, eventLog, timestamp string, metadata map[string]any) {
 	logMsg, err := BuildLog(source, eventName, eventLog, timestamp, metadata)
 	if err != nil {
 		fmt.Println("Error:", err)

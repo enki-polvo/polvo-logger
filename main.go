@@ -8,7 +8,7 @@ import (
 
 func main() {
 	// Build metadata directly as a map.
-	metadata := map[string]interface{}{
+	metadata := map[string]any{
 		"pid":          1234,
 		"uid":          2345,
 		"process_name": "myapp",
@@ -24,8 +24,10 @@ func main() {
 	// Note: This valid timestamp must match the layout "2006-01-02T15:04:05.000000Z07:00".
 	customTimestamp := "2004-09-26T12:34:56.123456+00:00"
 	fmt.Println("\nTest 2: Logger with valid timestamp:")
-	logger.PrintLog("libpcap", "connect", "Established connection to 192.168.1.100:80", customTimestamp, map[string]interface{}{
+	logger.PrintLog("libpcap", "connect", "Established connection to 192.168.1.100:80", customTimestamp, map[string]any{
 		"ip":   "192.168.1.100",
 		"port": 80,
 	})
+
+	// TODO: Create examples after making every model structure definitions
 }
