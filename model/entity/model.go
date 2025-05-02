@@ -1,7 +1,4 @@
-// # Model
-//
-// Entity model for Traces
-// Copyright (c) 2025, ENKI, Inc Polvo
+// model/entity/model.go
 package model
 
 import (
@@ -16,6 +13,7 @@ const (
 	FILE_ENTITY
 )
 
+// EntityTypeToString converts an EntityType to its string representation.
 func (e EntityType) String() string {
 	switch e {
 	case PROCESS_ENTITY:
@@ -29,8 +27,6 @@ func (e EntityType) String() string {
 	}
 }
 
-// # CommonEntityModel
-//
 // CommonEntityModel defines the structure for all entity types.
 type CommonEntityModel struct {
 	EntityType     EntityType  `json:"EntityType"`               // example: 0
@@ -38,20 +34,16 @@ type CommonEntityModel struct {
 	MatchedRuleIDs string      `json:"MatchedRuleIDs,omitempty"` // example: "rule1"
 }
 
-// # ProcessEntityModel
-//
 // ProcessEntityModel defines the structure for process entities.
 type ProcessEntityModel struct {
 	CommonEntityModel
 }
 
-// # NetworkEntityModel
-//
 // NetworkEntityModel defines the structure for network entities.
 type NetworkEntityModel struct {
 	CommonEntityModel
-	NumRRecvOps   int64 `json:"NumRRecvOps"`   // example: 100
-	NumWSentOps   int64 `json:"NumRSentOps"`   // example: 100
-	NumRRecvBytes int64 `json:"NumRRecvBytes"` // example: 100
-	NumWSentBytes int64 `json:"NumWSentBytes"` // example: 100
+	NumRRecvOps   int64 `json:"NumRRecvOps"`   // example: 100 (Number of Receive operations)
+	NumWSentOps   int64 `json:"NumWSentOps"`   // example: 100 (Number of Send operations)
+	NumRRecvBytes int64 `json:"NumRRecvBytes"` // example: 100 (Number of bytes received)
+	NumWSentBytes int64 `json:"NumWSentBytes"` // example: 100 (Number of bytes sent)
 }
