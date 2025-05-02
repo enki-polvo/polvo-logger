@@ -142,7 +142,7 @@ type TcpConnectEvent struct {
 	Metadata TcpConnectMetadata `json:"metadata"`
 }
 
-// TcpDisConnectEvent defines the event structure for TCP disconnection events.
+// TcpDisconnectEvent defines the event structure for TCP disconnection events.
 type TcpDisconnectEvent struct {
 	commonModel.CommonHeader
 	Metadata TcpDisconnectMetadata `json:"metadata"`
