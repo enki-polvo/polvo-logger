@@ -42,8 +42,8 @@ type ProcessEntityModel struct {
 // NetworkEntityModel defines the structure for network entities.
 type NetworkEntityModel struct {
 	CommonEntityModel
-	NumRRecvOps   int64 `json:"NumRRecvOps"`   // example: 100 (Number of Receive operations)
-	NumWSentOps   int64 `json:"NumWSentOps"`   // example: 100 (Number of Send operations)
-	NumRRecvBytes int64 `json:"NumRRecvBytes"` // example: 100 (Number of bytes received)
-	NumWSentBytes int64 `json:"NumWSentBytes"` // example: 100 (Number of bytes sent)
+	NumRecvOps   int64 `json:"NumRecvOps"`   // example: 100 (Number of Receive operations)
+	NumSentOps   int64 `json:"NumSentOps"`   // example: 100 (Number of Send operations)
+	NumRecvBytes int64 `json:"NumRecvBytes"` // example: 100 (Number of bytes received)
+	NumSentBytes int64 `json:"NumSentBytes"` // example: 100 (Number of bytes sent)
 }
