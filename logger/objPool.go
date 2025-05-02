@@ -1,3 +1,5 @@
+// logger/objPool.go
+
 package logger
 
 import (
@@ -17,6 +19,7 @@ var (
 	SingletonPool = newObjectPool()
 )
 
+// Pool interface defines the methods for the object pool.
 type Pool interface {
 	GetEventModelFromPool(eventName eventModel.EventCode) (eventModel.Event, error)
 	PutEventModelToPool(eventName eventModel.EventCode, event eventModel.Event) error
@@ -24,11 +27,13 @@ type Pool interface {
 	PutBufferToPool(buf *bytes.Buffer)
 }
 
+// objectPool implements the Pool interface.
 type objectPool struct {
 	bufPool      sync.Pool
 	eventPoolMap sync.Map // key: eventModel.EventCode, value: *sync.Pool{eventModel.Event}
 }
 
+// newObjectPool initializes a new object pool.
 func newObjectPool() Pool {
 	newPool := new(objectPool)
 
@@ -39,6 +44,7 @@ func newObjectPool() Pool {
 	}
 
 	newPool.eventPoolMap = sync.Map{}
+
 	// TODO: add all event pools to the object pool
 	// create procCreate event pool
 	newPool.eventPoolMap.Store(eventModel.PROC_CREATE, &sync.Pool{
@@ -46,12 +52,14 @@ func newObjectPool() Pool {
 			return &eventModel.ProcessCreateEvent{}
 		},
 	})
+
 	// create procTerminate event pool
 	newPool.eventPoolMap.Store(eventModel.PROC_TERMINATE, &sync.Pool{
 		New: func() any {
 			return &eventModel.ProcessTerminateEvent{}
 		},
 	})
+
 	// create bashReadline event pool
 	newPool.eventPoolMap.Store(eventModel.PROC_BASH_READLINE, &sync.Pool{
 		New: func() any {
@@ -61,6 +69,7 @@ func newObjectPool() Pool {
 	return newPool
 }
 
+// GetEventModelFromPool retrieves an event model from the pool.
 func (op *objectPool) GetEventModelFromPool(eventName eventModel.EventCode) (eventModel.Event, error) {
 	var (
 		value     any
@@ -73,6 +82,7 @@ func (op *objectPool) GetEventModelFromPool(eventName eventModel.EventCode) (eve
 	if !isExists {
 		return nil, fmt.Errorf(ErrEventNotFound, eventName.String())
 	}
+
 	// get event from pool
 	eventPool, ok := value.(*sync.Pool)
 	if !ok {
@@ -81,6 +91,7 @@ func (op *objectPool) GetEventModelFromPool(eventName eventModel.EventCode) (eve
 	return eventPool.Get(), nil
 }
 
+// PutEventModelToPool puts an event model back into the pool.
 func (op *objectPool) PutEventModelToPool(eventName eventModel.EventCode, event eventModel.Event) error {
 	var (
 		value     any
@@ -93,6 +104,7 @@ func (op *objectPool) PutEventModelToPool(eventName eventModel.EventCode, event 
 	if !isExists {
 		return fmt.Errorf(ErrEventNotFound, eventName.String())
 	}
+
 	// put event to pool
 	eventPool, ok := value.(*sync.Pool)
 	if !ok {
@@ -102,10 +114,12 @@ func (op *objectPool) PutEventModelToPool(eventName eventModel.EventCode, event 
 	return nil
 }
 
+// GetBufferFromPool retrieves a bytes.Buffer from the pool.
 func (op *objectPool) GetBufferFromPool() *bytes.Buffer {
 	return op.bufPool.Get().(*bytes.Buffer)
 }
 
+// PutBufferToPool puts a bytes.Buffer back into the pool.
 func (op *objectPool) PutBufferToPool(buf *bytes.Buffer) {
 	buf.Reset()
 	op.bufPool.Put(buf)
