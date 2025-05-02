@@ -99,7 +99,7 @@ type TcpConnectMetadata struct {
 }
 
 // TcpDisconnectMetadata defines the metadata structure for TCP disconnection events.
-type TcpDisConnectMetadata struct {
+type TcpDisconnectMetadata struct {
 	PID   int64  `json:"Pid"`   // example: 1234
 	DIP   string `json:"Dip"`   // example: "127.0.0.1"
 	Dport int64  `json:"Dport"` // example: 80
@@ -143,7 +143,7 @@ type TcpConnectEvent struct {
 }
 
 // TcpDisConnectEvent defines the event structure for TCP disconnection events.
-type TcpDisConnectEvent struct {
+type TcpDisconnectEvent struct {
 	commonModel.CommonHeader
-	Metadata TcpDisConnectMetadata `json:"metadata"`
+	Metadata TcpDisconnectMetadata `json:"metadata"`
 }
