@@ -15,3 +15,13 @@ const (
 	// REUP indicates that the entity already existed in system, but needs to be exported.
 	REUP
 )
+
+type FileOp int
+
+const (
+	CREATE FileOp = iota
+	DELETE
+	READ
+	WRITE
+	RENAME
+)

@@ -3,6 +3,7 @@ package model
 
 import (
 	commonModel "github.com/enki-polvo/polvo-logger/model"
+	state "github.com/enki-polvo/polvo-logger/model/state"
 )
 
 // EventCode defines the event code type.
@@ -16,6 +17,9 @@ const (
 	PROC_CREATE EventCode = iota
 	PROC_TERMINATE
 	PROC_BASH_READLINE
+	TCP_CONNECT
+	TCP_DISCONNECT
+	FILE_EVENT
 )
 
 // EventCodeToString converts an EventCode to its string representation.
@@ -27,6 +31,12 @@ func (e EventCode) String() string {
 		return "ProcessTerminate"
 	case PROC_BASH_READLINE:
 		return "BashReadline"
+	case TCP_CONNECT:
+		return "TcpConnect"
+	case TCP_DISCONNECT:
+		return "TcpDisconnect"
+	case FILE_EVENT:
+		return "FileEvent"
 	default:
 		return ""
 	}
@@ -108,6 +118,18 @@ type TcpDisconnectMetadata struct {
 	Proto int64  `json:"Proto"` // example: 4
 }
 
+// FileMetadata defines the metadata structure for file events.
+type FileMetadata struct {
+	// process relation
+	PID int64 `json:"Pid"` // example: 1234
+	UID int64 `json:"Uid"` // example: 1000
+	// file info
+	Path string `json:"Path"` // example: "/tmp/file.txt"
+	// file operation
+	Op   state.FileOp `json:"Op"`   // example: "READ" "RENAME" "WRITE" etc..
+	Mode uint64       `json:"Mode"` // example: 0
+}
+
 // --------------------------------------------------
 // System events metadata
 // --------------------------------------------------
@@ -146,4 +168,10 @@ type TcpConnectEvent struct {
 type TcpDisconnectEvent struct {
 	commonModel.CommonHeader
 	Metadata TcpDisconnectMetadata `json:"metadata"`
+}
+
+// FileEvent defines the event structure for file events.
+type FileEvent struct {
+	commonModel.CommonHeader
+	Metadata FileMetadata `json:"metadata"`
 }
