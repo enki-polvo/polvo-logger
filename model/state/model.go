@@ -16,12 +16,18 @@ const (
 	REUP
 )
 
+// FileOp defines the file operation types.
 type FileOp int
 
 const (
+	// File creation
 	CREATE FileOp = iota
+	// File deletion
 	DELETE
+	// File read
 	READ
+	// File write
 	WRITE
+	// File rename
 	RENAME
 )
