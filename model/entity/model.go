@@ -42,7 +42,7 @@ type ProcessEntityModel struct {
 // NetworkEntityModel defines the structure for network entities.
 type NetworkEntityModel struct {
 	CommonEntityModel
-	// TODO:
+	// TODO: These fields are placeholders for tracking network activity metrics.
 	// NumRecvOps   int64 `json:"NumRecvOps"`   // example: 100 (Number of Receive operations)
 	// NumSentOps   int64 `json:"NumSentOps"`   // example: 100 (Number of Send operations)
 	// NumRecvBytes int64 `json:"NumRecvBytes"` // example: 100 (Number of bytes received)
@@ -50,7 +50,7 @@ type NetworkEntityModel struct {
 }
 
 // FileEntityModel defines the structure for file entities.
-// TODO: make file entity(trace) in polvo-architecture
+// TODO: make file entity(trace) in polvo-architecture Implement FileEntityModel to represent file-related operations in polvo-architecture.
 // type FileEntityModel struct {
 // 	CommonEntityModel
 // 	NumReadOps    int64 `json:"NumReadOps"`    // example: 100 (Number of Read operations)
