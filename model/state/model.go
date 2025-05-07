@@ -15,3 +15,19 @@ const (
 	// REUP indicates that the entity already existed in system, but needs to be exported.
 	REUP
 )
+
+// FileOp defines the file operation types.
+type FileOp int
+
+const (
+	// File creation
+	CREATE FileOp = iota
+	// File deletion
+	DELETE
+	// File read
+	READ
+	// File write
+	WRITE
+	// File rename
+	RENAME
+)
