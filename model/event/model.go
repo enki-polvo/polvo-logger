@@ -17,6 +17,7 @@ const (
 	PROC_CREATE EventCode = iota
 	PROC_TERMINATE
 	PROC_BASH_READLINE
+	PROC_SERVICE
 	TCP_CONNECT
 	TCP_DISCONNECT
 	FILE_EVENT
@@ -31,6 +32,8 @@ func (e EventCode) String() string {
 		return "ProcessTerminate"
 	case PROC_BASH_READLINE:
 		return "BashReadline"
+	case PROC_SERVICE:
+		return "Service"
 	case TCP_CONNECT:
 		return "TcpConnect"
 	case TCP_DISCONNECT:
