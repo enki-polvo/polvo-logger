@@ -124,7 +124,7 @@ type FileMetadata struct {
 	PID int64 `json:"Pid"` // example: 1234
 	UID int64 `json:"Uid"` // example: 1000
 	// file info
-	Path string `json:"Path"` // example: "/tmp/file.txt"
+	TargetFilename string `json:"Path"` // example: "/tmp/file.txt"
 	// file operation
 	Op   state.FileOp `json:"Op"`   // example: "READ" "RENAME" "WRITE" etc..
 	Mode uint64       `json:"Mode"` // example: 0
