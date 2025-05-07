@@ -14,5 +14,7 @@ Polvo Logger is a simple logging utility written in Go. It provides a structured
 - Activate the project's **Git hook** to check if your commit messages follow the recommended conventions. Execute the following command **right after** cloning this repository.
 
 ```sh
+chmod +x .githooks/commit-msg
 git config core.hooksPath .githooks
+git config core.hooksPath   # To verify
 ```
