@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+MSG_FILE="$1"
+
+# Allowed categories – first letter uppercase, rest lowercase
+CATEGORIES="Feat|Fix|Docs|Style|Refactor|Perf|Test|Chore"
+
+# Now:
+#  - anchor Category:
+#  - a space
+#  - [A-Z] first letter
+#  - then one or more of: hyphen, letters, digits, space, underscore, apostrophe,
+#      parentheses, period, comma, exclamation, question, colon, semicolon, tilde, slash
+PATTERN="^(${CATEGORIES}): [A-Z][-A-Za-z0-9 _'().,!?:;~/]+$"
+
+if ! grep -Eq "$PATTERN" "$MSG_FILE"; then
+  cat <<EOF >&2
+✖ Invalid commit message format.
+  • Should be: Category: Message
+    – Category one of: ${CATEGORIES//|/, }
+    – Colon, one space
+    – Message starts with capital letter
+    – Allowed chars in message: letters, digits, space, _ ' () . , ! ? : ; ~ - and /
+  e.g. Feat: Add user authentication
+       Chore: Update CI pipeline config
+EOF
+  exit 1
+fi
