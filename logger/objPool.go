@@ -16,6 +16,16 @@ const (
 )
 
 var (
+	modelMapper = map[eventModel.EventCode]func() any{
+		eventModel.PROC_CREATE:        func() any { return &eventModel.ProcessCreateEvent{} },
+		eventModel.PROC_TERMINATE:     func() any { return &eventModel.ProcessTerminateEvent{} },
+		eventModel.PROC_BASH_READLINE: func() any { return &eventModel.BashReadlineEvent{} },
+		eventModel.PROC_SERVICE:       func() any { return &eventModel.ServiceEvent{} },
+		eventModel.TCP_CONNECT:        func() any { return &eventModel.TcpConnectEvent{} },
+		eventModel.TCP_DISCONNECT:     func() any { return &eventModel.TcpDisconnectEvent{} },
+		eventModel.FILE_EVENT:         func() any { return &eventModel.FileEvent{} },
+	}
+
 	SingletonPool = newObjectPool()
 )
 
@@ -45,27 +55,13 @@ func newObjectPool() Pool {
 
 	newPool.eventPoolMap = sync.Map{}
 
-	// TODO: add all event pools to the object pool
-	// create procCreate event pool
-	newPool.eventPoolMap.Store(eventModel.PROC_CREATE, &sync.Pool{
-		New: func() any {
-			return &eventModel.ProcessCreateEvent{}
-		},
-	})
+	for eventCode, newFunc := range modelMapper {
+		newPool.eventPoolMap.Store(eventCode, &sync.Pool{
+			New: newFunc,
+		})
+	}
 
-	// create procTerminate event pool
-	newPool.eventPoolMap.Store(eventModel.PROC_TERMINATE, &sync.Pool{
-		New: func() any {
-			return &eventModel.ProcessTerminateEvent{}
-		},
-	})
-
-	// create bashReadline event pool
-	newPool.eventPoolMap.Store(eventModel.PROC_BASH_READLINE, &sync.Pool{
-		New: func() any {
-			return &eventModel.BashReadlineEvent{}
-		},
-	})
+	// create
 	return newPool
 }
 
