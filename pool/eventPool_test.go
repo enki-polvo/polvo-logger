@@ -147,7 +147,7 @@ func TestStressTestMultipleGoroutines(t *testing.T) {
 	var wg sync.WaitGroup
 	var errChan chan error
 
-	errChan = make(chan error, 0)
+	errChan = make(chan error, 10)
 	defer close(errChan)
 
 	for i := 0; i < 10; i++ {
@@ -192,7 +192,7 @@ func TestStressTestInvalidInMultipleGoroutines(t *testing.T) {
 
 	var wg sync.WaitGroup
 	var errChan chan error
-	errChan = make(chan error, 0)
+	errChan = make(chan error, 10)
 	defer close(errChan)
 
 	for i := 0; i < 10; i++ {
