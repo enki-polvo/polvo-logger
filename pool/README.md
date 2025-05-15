@@ -30,7 +30,7 @@ func PrintProcCreate() error  {
     ...
     
     // Free method returns object to pool
-    err = pool.Free(model.PROC_CREATE, logModel)
+    err = pool.Free(logModel)
     if err != nil {
         return err
     }
