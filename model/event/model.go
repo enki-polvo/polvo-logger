@@ -1,49 +1,13 @@
 // event/model.go
-package model
+package eventModel
 
 import (
 	commonModel "github.com/enki-polvo/polvo-logger/model"
 	state "github.com/enki-polvo/polvo-logger/model/state"
 )
 
-// EventCode defines the event code type.
-type EventCode int
-
 // Event defines the interface for all event types.
 type Event any
-
-// Event codes
-const (
-	PROC_CREATE EventCode = iota
-	PROC_TERMINATE
-	PROC_BASH_READLINE
-	PROC_SERVICE
-	TCP_CONNECT
-	TCP_DISCONNECT
-	FILE_EVENT
-)
-
-// EventCodeToString converts an EventCode to its string representation.
-func (e EventCode) String() string {
-	switch e {
-	case PROC_CREATE:
-		return "ProcessCreate"
-	case PROC_TERMINATE:
-		return "ProcessTerminate"
-	case PROC_BASH_READLINE:
-		return "BashReadline"
-	case PROC_SERVICE:
-		return "Service"
-	case TCP_CONNECT:
-		return "TcpConnect"
-	case TCP_DISCONNECT:
-		return "TcpDisconnect"
-	case FILE_EVENT:
-		return "FileEvent"
-	default:
-		return ""
-	}
-}
 
 // --------------------------------------------------
 // Event metadata
