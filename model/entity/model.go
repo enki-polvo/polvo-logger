@@ -1,5 +1,5 @@
 // model/entity/model.go
-package model
+package entityModel
 
 import (
 	state "github.com/enki-polvo/polvo-logger/model/state"
