@@ -35,7 +35,7 @@ func TestAllocateEvent(t *testing.T) {
 		t.Fatal("Allocated event is nil")
 	}
 
-	if _, ok := event.(*eventModel.ProcessCreateEvent); !ok {
+	if _, ok := event.Metadata.(*eventModel.ProcessCreateEvent); !ok {
 		t.Fatalf("Allocated event is not of type ProcessCreateEvent")
 	}
 	// Free the event back to the pool
