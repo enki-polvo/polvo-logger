@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"sync"
 
+	model "github.com/enki-polvo/polvo-logger/model"
 	eventModel "github.com/enki-polvo/polvo-logger/model/event"
 )
 
@@ -15,21 +16,21 @@ const (
 )
 
 var (
-	modelMapper = map[eventModel.EventCode]func() any{
-		eventModel.PROC_CREATE:        func() any { return &eventModel.ProcessCreateEvent{} },
-		eventModel.PROC_TERMINATE:     func() any { return &eventModel.ProcessTerminateEvent{} },
-		eventModel.PROC_BASH_READLINE: func() any { return &eventModel.BashReadlineEvent{} },
-		eventModel.PROC_SERVICE:       func() any { return &eventModel.ServiceEvent{} },
-		eventModel.TCP_CONNECT:        func() any { return &eventModel.TcpConnectEvent{} },
-		eventModel.TCP_DISCONNECT:     func() any { return &eventModel.TcpDisconnectEvent{} },
-		eventModel.FILE_EVENT:         func() any { return &eventModel.FileEvent{} },
+	modelMapper = map[model.EventCode]func() any{
+		model.PROC_CREATE:        func() any { return &eventModel.ProcessCreateEvent{} },
+		model.PROC_TERMINATE:     func() any { return &eventModel.ProcessTerminateEvent{} },
+		model.PROC_BASH_READLINE: func() any { return &eventModel.BashReadlineEvent{} },
+		model.PROC_SERVICE:       func() any { return &eventModel.ServiceEvent{} },
+		model.TCP_CONNECT:        func() any { return &eventModel.TcpConnectEvent{} },
+		model.TCP_DISCONNECT:     func() any { return &eventModel.TcpDisconnectEvent{} },
+		model.FILE_EVENT:         func() any { return &eventModel.FileEvent{} },
 	}
 )
 
 // Pool interface defines the methods for the object pool.
 type Pool interface {
-	Allocate(eventName eventModel.EventCode) (eventModel.Event, error)
-	Free(eventName eventModel.EventCode, event eventModel.Event) error
+	Allocate(eventName model.EventCode) (eventModel.Event, error)
+	Free(eventName model.EventCode, event eventModel.Event) error
 }
 
 // eventPool implements the Pool interface.
@@ -54,7 +55,7 @@ func NewEventPool() Pool {
 }
 
 // Allocate retrieves an event model from the pool.
-func (op *eventPool) Allocate(eventName eventModel.EventCode) (eventModel.Event, error) {
+func (op *eventPool) Allocate(eventName model.EventCode) (eventModel.Event, error) {
 	var (
 		value     any
 		eventPool *sync.Pool
@@ -76,7 +77,7 @@ func (op *eventPool) Allocate(eventName eventModel.EventCode) (eventModel.Event,
 }
 
 // Free puts an event model back into the pool.
-func (op *eventPool) Free(eventName eventModel.EventCode, event eventModel.Event) error {
+func (op *eventPool) Free(eventName model.EventCode, event eventModel.Event) error {
 	var (
 		value     any
 		eventPool *sync.Pool

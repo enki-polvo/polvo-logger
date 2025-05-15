@@ -7,6 +7,7 @@ import (
 
 	"fmt"
 
+	model "github.com/enki-polvo/polvo-logger/model"
 	eventModel "github.com/enki-polvo/polvo-logger/model/event"
 	eventPool "github.com/enki-polvo/polvo-logger/pool"
 )
@@ -23,7 +24,7 @@ func TestCreateNewPool(t *testing.T) {
 // Test that a valid event can be allocated from the pool
 func TestAllocateEvent(t *testing.T) {
 	pool := eventPool.NewEventPool()
-	eventCode := eventModel.PROC_CREATE
+	eventCode := model.PROC_CREATE
 
 	event, err := pool.Allocate(eventCode)
 	if err != nil {
@@ -48,7 +49,7 @@ func TestAllocateEvent(t *testing.T) {
 // Test that an invalid event code returns an error
 func TestAllocateInvalidEvent(t *testing.T) {
 	pool := eventPool.NewEventPool()
-	invalidEventCode := eventModel.EventCode(999) // Assuming 999 is not a valid event code
+	invalidEventCode := model.EventCode(999) // Assuming 999 is not a valid event code
 
 	event, err := pool.Allocate(invalidEventCode)
 	if err == nil {
@@ -64,7 +65,7 @@ func TestAllocateInvalidEvent(t *testing.T) {
 // Test that a valid event can be freed back to the pool
 func TestFreeEvent(t *testing.T) {
 	pool := eventPool.NewEventPool()
-	eventCode := eventModel.PROC_CREATE
+	eventCode := model.PROC_CREATE
 
 	event, err := pool.Allocate(eventCode)
 	if err != nil {
@@ -85,8 +86,8 @@ func TestFreeEvent(t *testing.T) {
 // Test that freeing an invalid event code returns an error
 func TestFreeInvalidEvent(t *testing.T) {
 	pool := eventPool.NewEventPool()
-	invalidEventCode := eventModel.EventCode(999) // Assuming 999 is not a valid event code
-	event := &eventModel.ProcessCreateEvent{}     // Create a dummy event
+	invalidEventCode := model.EventCode(999)  // Assuming 999 is not a valid event code
+	event := &eventModel.ProcessCreateEvent{} // Create a dummy event
 
 	err := pool.Free(invalidEventCode, event)
 	if err == nil {
@@ -98,7 +99,7 @@ func TestFreeInvalidEvent(t *testing.T) {
 // This test checks the performance of allocating and freeing events in a loop
 func TestStressTestAllocateFree(t *testing.T) {
 	pool := eventPool.NewEventPool()
-	eventCode := eventModel.PROC_CREATE
+	eventCode := model.PROC_CREATE
 
 	for i := 0; i < 1000; i++ {
 		event, err := pool.Allocate(eventCode)
@@ -122,7 +123,7 @@ func TestStressTestAllocateFree(t *testing.T) {
 // and ensures that it returns an error
 func TestStressTestAllocateInvalidEvent(t *testing.T) {
 	pool := eventPool.NewEventPool()
-	invalidEventCode := eventModel.EventCode(999) // Assuming 999 is not a valid event code
+	invalidEventCode := model.EventCode(999) // Assuming 999 is not a valid event code
 
 	for i := 0; i < 1000; i++ {
 		event, err := pool.Allocate(invalidEventCode)
@@ -141,7 +142,7 @@ func TestStressTestAllocateInvalidEvent(t *testing.T) {
 // and ensures that it returns an error
 func TestStressTestMultipleGoroutines(t *testing.T) {
 	pool := eventPool.NewEventPool()
-	eventCode := eventModel.PROC_CREATE
+	eventCode := model.PROC_CREATE
 
 	var wg sync.WaitGroup
 	var errChan chan error
@@ -187,7 +188,7 @@ func TestStressTestMultipleGoroutines(t *testing.T) {
 // in multiple goroutines and ensures that it returns an error
 func TestStressTestInvalidInMultipleGoroutines(t *testing.T) {
 	pool := eventPool.NewEventPool()
-	invalidEventCode := eventModel.EventCode(999) // Assuming 999 is not a valid event code
+	invalidEventCode := model.EventCode(999) // Assuming 999 is not a valid event code
 
 	var wg sync.WaitGroup
 	var errChan chan error
