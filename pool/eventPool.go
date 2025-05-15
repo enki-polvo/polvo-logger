@@ -12,6 +12,7 @@ import (
 
 const (
 	ErrEventNotFound              = "Event '%s' not found in pool"
+	ErrGetEventFromPoolFailed     = "failed to get event from pool"
 	ErrInvalidTypeAssertionInPool = "invalid type assertion for event pool"
 )
 
@@ -64,7 +65,7 @@ var (
 
 // Pool interface defines the methods for the object pool.
 type Pool interface {
-	Allocate(eventName model.EventCode) (eventModel.Event, error)
+	Allocate(eventName model.EventCode) (*model.CommonModel, error)
 	Free(event eventModel.Event) error
 }
 
@@ -90,7 +91,7 @@ func NewEventPool() Pool {
 }
 
 // Allocate retrieves an event model from the pool.
-func (op *eventPool) Allocate(eventName model.EventCode) (eventModel.Event, error) {
+func (op *eventPool) Allocate(eventName model.EventCode) (*model.CommonModel, error) {
 	var (
 		value     any
 		eventPool *sync.Pool
@@ -108,7 +109,18 @@ func (op *eventPool) Allocate(eventName model.EventCode) (eventModel.Event, erro
 	if !ok {
 		return nil, fmt.Errorf(ErrInvalidTypeAssertionInPool)
 	}
-	return eventPool.Get(), nil
+
+	value = eventPool.Get()
+	if value == nil {
+		return nil, fmt.Errorf(ErrGetEventFromPoolFailed)
+	}
+
+	event, ok := value.(*model.CommonModel)
+	if !ok {
+		return nil, fmt.Errorf(ErrInvalidTypeAssertionInPool)
+	}
+
+	return event, nil
 }
 
 // Free puts an event model back into the pool.
