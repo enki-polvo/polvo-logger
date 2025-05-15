@@ -34,14 +34,26 @@ func TestAllocateEvent(t *testing.T) {
 		t.Fatal("Allocated event is nil")
 	}
 
-	t.Logf("Allocated event: %v", event)
 	if event.EventCode != eventCode {
 		t.Fatalf("Allocated event code does not match expected code: got %v, want %v", event.EventCode, eventCode)
 	}
 
-	if _, ok := event.Metadata.(*eventModel.ProcessCreateMetadata); !ok {
+	metadata, ok := event.Metadata.(*eventModel.ProcessCreateMetadata)
+	if !ok {
 		t.Fatalf("Allocated event is not of type ProcessCreateEvent")
 	}
+
+	metadata.PID = 1234
+	metadata.PPID = 5678
+	metadata.UID = 1000
+	metadata.Username = "root"
+	metadata.Commandline = "bash rm -rf /tmp"
+	metadata.ENV = "PATH=/usr/bin:/bin"
+	metadata.Image = "/usr/bin/bash"
+	metadata.TGID = 1234
+
+	t.Logf("Allocated event: %v\n, metadata: %v\n", event, event.Metadata)
+
 	// Free the event back to the pool
 	err = pool.Free(event)
 	if err != nil {
