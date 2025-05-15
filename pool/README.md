@@ -26,8 +26,25 @@ func PrintProcCreate() error  {
         return err
     }
     
-    // Print logModel
-    ...
+    // Process logModel
+    switch (logModel.EventCode) {
+        case eventModel.PROC_CREATE:
+            // In CommonModel, type casting is required because Metadata is any type.
+            // The Allocate function returns an address. Similarly, the Metadata inside CommonModel is also an address.
+            metadata := logModel.Metadata.(*eventModel.ProcessCreateMetadata)
+            // One thing to note is that Allocate does not guarantee initialization of values ​​inside log.
+            metadata.PID = 1234
+            metadata.PPID = 5678
+            metadata.UID = 1000
+            metadata.Username = "root"
+            metadata.Commandline = "bash rm -rf /tmp"
+            metadata.ENV = "PATH=/usr/bin:/bin"
+            metadata.Image = "/usr/bin/bash"
+            metadata.TGID = 1234
+            ...
+    }
+
+    fmt.Printf("%v, %v\n", logModel, logModel.Metadata)
     
     // Free method returns object to pool
     err = pool.Free(logModel)
