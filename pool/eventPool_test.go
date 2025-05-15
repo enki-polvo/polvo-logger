@@ -3,7 +3,6 @@ package eventPool_test
 import (
 	"sync"
 	"testing"
-	"time"
 
 	"fmt"
 
@@ -35,7 +34,12 @@ func TestAllocateEvent(t *testing.T) {
 		t.Fatal("Allocated event is nil")
 	}
 
-	if _, ok := event.Metadata.(*eventModel.ProcessCreateEvent); !ok {
+	t.Logf("Allocated event: %v", event)
+	if event.EventCode != eventCode {
+		t.Fatalf("Allocated event code does not match expected code: got %v, want %v", event.EventCode, eventCode)
+	}
+
+	if _, ok := event.Metadata.(*eventModel.ProcessCreateMetadata); !ok {
 		t.Fatalf("Allocated event is not of type ProcessCreateEvent")
 	}
 	// Free the event back to the pool
@@ -206,15 +210,8 @@ func TestStressTestInvalidInMultipleGoroutines(t *testing.T) {
 					errChan <- fmt.Errorf("expected error when allocating invalid event, but got none")
 					return
 				}
-
 				if event != nil {
 					errChan <- fmt.Errorf("allocated event should be nil for invalid event code")
-					return
-				}
-				time.Sleep(1 * time.Millisecond) // Simulate some delay
-				pool.Free(event)
-				if err == nil {
-					errChan <- fmt.Errorf("expected error when freeing invalid event, but got none")
 					return
 				}
 			}
