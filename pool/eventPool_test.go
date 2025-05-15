@@ -39,7 +39,7 @@ func TestAllocateEvent(t *testing.T) {
 		t.Fatalf("Allocated event is not of type ProcessCreateEvent")
 	}
 	// Free the event back to the pool
-	err = pool.Free(eventCode, event)
+	err = pool.Free(event)
 	if err != nil {
 		t.Fatalf("Failed to free event: %v", err)
 	}
@@ -76,24 +76,25 @@ func TestFreeEvent(t *testing.T) {
 		t.Fatal("Allocated event is nil")
 	}
 
-	err = pool.Free(eventCode, event)
+	err = pool.Free(event)
 	if err != nil {
 		t.Fatalf("Failed to free event: %v", err)
 	}
 }
 
-// Test Freeing of an invalid event
-// Test that freeing an invalid event code returns an error
-func TestFreeInvalidEvent(t *testing.T) {
-	pool := eventPool.NewEventPool()
-	invalidEventCode := model.EventCode(999)  // Assuming 999 is not a valid event code
-	event := &eventModel.ProcessCreateEvent{} // Create a dummy event
+// (DEPRECATED) Test Freeing of an invalid event
+// // Test Freeing of an invalid event
+// // Test that freeing an invalid event code returns an error
+// func TestFreeInvalidEvent(t *testing.T) {
+// 	pool := eventPool.NewEventPool()
+// 	invalidEventCode := model.EventCode(999)  // Assuming 999 is not a valid event code
+// 	event := &eventModel.ProcessCreateEvent{} // Create a dummy event
 
-	err := pool.Free(invalidEventCode, event)
-	if err == nil {
-		t.Fatal("Expected error when freeing invalid event, but got none")
-	}
-}
+// 	err := pool.Free(event)
+// 	if err == nil {
+// 		t.Fatal("Expected error when freeing invalid event, but got none")
+// 	}
+// }
 
 // Test Stress Test for Allocating and Freeing Events
 // This test checks the performance of allocating and freeing events in a loop
@@ -111,7 +112,7 @@ func TestStressTestAllocateFree(t *testing.T) {
 			t.Fatal("Allocated event is nil")
 		}
 
-		err = pool.Free(eventCode, event)
+		err = pool.Free(event)
 		if err != nil {
 			t.Fatalf("Failed to free event: %v", err)
 		}
@@ -166,7 +167,7 @@ func TestStressTestMultipleGoroutines(t *testing.T) {
 					return
 				}
 
-				err = pool.Free(eventCode, event)
+				err = pool.Free(event)
 				if err != nil {
 					errChan <- fmt.Errorf("failed to free event: %v", err)
 					return
@@ -211,7 +212,7 @@ func TestStressTestInvalidInMultipleGoroutines(t *testing.T) {
 					return
 				}
 				time.Sleep(1 * time.Millisecond) // Simulate some delay
-				pool.Free(invalidEventCode, event)
+				pool.Free(event)
 				if err == nil {
 					errChan <- fmt.Errorf("expected error when freeing invalid event, but got none")
 					return
