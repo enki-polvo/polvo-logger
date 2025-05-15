@@ -1,5 +1,5 @@
 // model/state/model.go
-package model
+package stateModel
 
 // State defines the state of an entities and events.
 type State int
