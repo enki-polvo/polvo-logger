@@ -11,6 +11,7 @@ Here is an example usage:
 import (
     ...
     eventModel "github.com/enki-polvo/polvo-logger/model/event"
+    model "github.com/enki-polvo/polvo-logger/model"
     eventPool "github.com/enki-polvo/polvo-logger/pool"
 )
 
@@ -20,7 +21,7 @@ var pool = eventPool.NewEventPool()
 
 func PrintProcCreate() error  {
     // Get object from pool
-    logModel, err := pool.Allocate(eventModel.PROC_CREATE)
+    logModel, err := pool.Allocate(model.PROC_CREATE)
     if err != nil {
         return err
     }
@@ -29,7 +30,7 @@ func PrintProcCreate() error  {
     ...
     
     // Free method returns object to pool
-    err = pool.Free(eventModel.PROC_CREATE, logModel)
+    err = pool.Free(model.PROC_CREATE, logModel)
     if err != nil {
         return err
     }
