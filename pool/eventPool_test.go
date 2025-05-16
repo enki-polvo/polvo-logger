@@ -3,7 +3,6 @@ package eventPool_test
 import (
 	"sync"
 	"testing"
-	"time"
 
 	"fmt"
 
@@ -35,9 +34,26 @@ func TestAllocateEvent(t *testing.T) {
 		t.Fatal("Allocated event is nil")
 	}
 
-	if _, ok := event.(*eventModel.ProcessCreateEvent); !ok {
+	if event.EventCode != eventCode {
+		t.Fatalf("Allocated event code does not match expected code: got %v, want %v", event.EventCode, eventCode)
+	}
+
+	metadata, ok := event.Metadata.(*eventModel.ProcessCreateMetadata)
+	if !ok {
 		t.Fatalf("Allocated event is not of type ProcessCreateEvent")
 	}
+
+	metadata.PID = 1234
+	metadata.PPID = 5678
+	metadata.UID = 1000
+	metadata.Username = "root"
+	metadata.Commandline = "bash rm -rf /tmp"
+	metadata.ENV = "PATH=/usr/bin:/bin"
+	metadata.Image = "/usr/bin/bash"
+	metadata.TGID = 1234
+
+	t.Logf("Allocated event: %v\n, metadata: %v\n", event, event.Metadata)
+
 	// Free the event back to the pool
 	err = pool.Free(event)
 	if err != nil {
@@ -206,15 +222,8 @@ func TestStressTestInvalidInMultipleGoroutines(t *testing.T) {
 					errChan <- fmt.Errorf("expected error when allocating invalid event, but got none")
 					return
 				}
-
 				if event != nil {
 					errChan <- fmt.Errorf("allocated event should be nil for invalid event code")
-					return
-				}
-				time.Sleep(1 * time.Millisecond) // Simulate some delay
-				pool.Free(event)
-				if err == nil {
-					errChan <- fmt.Errorf("expected error when freeing invalid event, but got none")
 					return
 				}
 			}

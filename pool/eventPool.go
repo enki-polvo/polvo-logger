@@ -12,51 +12,59 @@ import (
 
 const (
 	ErrEventNotFound              = "Event '%s' not found in pool"
+	ErrGetEventFromPoolFailed     = "failed to get event from pool"
 	ErrInvalidTypeAssertionInPool = "invalid type assertion for event pool"
 )
 
 var (
 	modelMapper = map[model.EventCode]func() any{
 		model.PROC_CREATE: func() any {
-			obj := &eventModel.ProcessCreateEvent{}
+			obj := &model.CommonModel{}
 			obj.CommonHeader.EventCode = model.PROC_CREATE
 			obj.CommonHeader.EventName = model.PROC_CREATE.String()
+			obj.Metadata = &eventModel.ProcessCreateMetadata{}
 			return obj
 		},
 		model.PROC_TERMINATE: func() any {
-			obj := &eventModel.ProcessTerminateEvent{}
+			obj := &model.CommonModel{}
 			obj.CommonHeader.EventCode = model.PROC_TERMINATE
 			obj.CommonHeader.EventName = model.PROC_TERMINATE.String()
+			obj.Metadata = &eventModel.ProcessTerminateMetadata{}
 			return obj
 		},
 		model.PROC_BASH_READLINE: func() any {
-			obj := &eventModel.BashReadlineEvent{}
+			obj := &model.CommonModel{}
 			obj.CommonHeader.EventCode = model.PROC_BASH_READLINE
 			obj.CommonHeader.EventName = model.PROC_BASH_READLINE.String()
+			obj.Metadata = &eventModel.BashReadlineMetadata{}
 			return obj
 		},
 		model.PROC_SERVICE: func() any {
-			obj := &eventModel.ServiceEvent{}
+			obj := &model.CommonModel{}
 			obj.CommonHeader.EventCode = model.PROC_SERVICE
 			obj.CommonHeader.EventName = model.PROC_SERVICE.String()
+			obj.Metadata = &eventModel.ServiceMetadata{}
 			return obj
 		},
 		model.TCP_CONNECT: func() any {
-			obj := &eventModel.TcpConnectEvent{}
+			obj := &model.CommonModel{}
 			obj.CommonHeader.EventCode = model.TCP_CONNECT
 			obj.CommonHeader.EventName = model.TCP_CONNECT.String()
+			obj.Metadata = &eventModel.TcpConnectMetadata{}
 			return obj
 		},
 		model.TCP_DISCONNECT: func() any {
-			obj := &eventModel.TcpDisconnectEvent{}
+			obj := &model.CommonModel{}
 			obj.CommonHeader.EventCode = model.TCP_DISCONNECT
 			obj.CommonHeader.EventName = model.TCP_DISCONNECT.String()
+			obj.Metadata = &eventModel.TcpDisconnectMetadata{}
 			return obj
 		},
 		model.FILE_EVENT: func() any {
-			obj := &eventModel.FileEvent{}
+			obj := &model.CommonModel{}
 			obj.CommonHeader.EventCode = model.FILE_EVENT
 			obj.CommonHeader.EventName = model.FILE_EVENT.String()
+			obj.Metadata = &eventModel.FileMetadata{}
 			return obj
 		},
 	}
@@ -64,7 +72,7 @@ var (
 
 // Pool interface defines the methods for the object pool.
 type Pool interface {
-	Allocate(eventName model.EventCode) (eventModel.Event, error)
+	Allocate(eventName model.EventCode) (*model.CommonModel, error)
 	Free(event eventModel.Event) error
 }
 
@@ -90,7 +98,7 @@ func NewEventPool() Pool {
 }
 
 // Allocate retrieves an event model from the pool.
-func (op *eventPool) Allocate(eventName model.EventCode) (eventModel.Event, error) {
+func (op *eventPool) Allocate(eventName model.EventCode) (*model.CommonModel, error) {
 	var (
 		value     any
 		eventPool *sync.Pool
@@ -108,7 +116,18 @@ func (op *eventPool) Allocate(eventName model.EventCode) (eventModel.Event, erro
 	if !ok {
 		return nil, fmt.Errorf(ErrInvalidTypeAssertionInPool)
 	}
-	return eventPool.Get(), nil
+
+	value = eventPool.Get()
+	if value == nil {
+		return nil, fmt.Errorf(ErrGetEventFromPoolFailed)
+	}
+
+	event, ok := value.(*model.CommonModel)
+	if !ok {
+		return nil, fmt.Errorf(ErrInvalidTypeAssertionInPool)
+	}
+
+	return event, nil
 }
 
 // Free puts an event model back into the pool.
@@ -121,7 +140,7 @@ func (op *eventPool) Free(event eventModel.Event) error {
 	)
 
 	// get event name from event
-	eventName = event.(model.CommonModel).EventCode
+	eventName = event.(*model.CommonModel).EventCode
 	// check if event pool exists
 	value, isExists = op.eventPoolMap.Load(eventName)
 	if !isExists {
