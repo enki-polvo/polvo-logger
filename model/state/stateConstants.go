@@ -21,13 +21,13 @@ type FileOp int
 
 const (
 	// File creation
-	CREATE FileOp = iota
+	FILE_CREATE FileOp = iota
 	// File deletion
-	DELETE
+	FILE_DELETE
 	// File read
-	READ
+	FILE_READ
 	// File write
-	WRITE
+	FILE_WRITE
 	// File rename
-	RENAME
+	FILE_RENAME
 )
