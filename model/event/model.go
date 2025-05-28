@@ -70,11 +70,11 @@ type TcpMetadata struct {
 	// process  relation
 	PID int64 `json:"Pid"` // example: 1234
 	// tcp info
-	DIP   string `json:"Dip"`   // example: "127.0.0.1"
-	Dport int64  `json:"Dport"` // example: 80
-	SIP   string `json:"Sip"`   // example: "127.0.0.1"
-	Sport int64  `json:"Sport"` // example: 80
-	Proto int64  `json:"Proto"` // example: 4
+	Daddr    string `json:"Daddr"`    // example: "127.0.0.1"
+	Dport    int64  `json:"Dport"`    // example: 80
+	Saddr    string `json:"Saddr"`    // example: "127.0.0.1"
+	Sport    int64  `json:"Sport"`    // example: 80
+	Protocol int64  `json:"Protocol"` // example: 4
 	// tcp operation
 	Op state.TcpOp `json:"Op"` // example: "CONNECT" "DISCONNECT" "ACCEPT" etc..
 }

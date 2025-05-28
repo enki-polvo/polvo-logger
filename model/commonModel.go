@@ -30,7 +30,7 @@ func (e EventCode) String() string {
 	case PROC_SERVICE:
 		return "Service"
 	case TCP_EVENT:
-		return "TcpEVENT"
+		return "TcpEvent"
 	case FILE_EVENT:
 		return "FileEvent"
 	default:
