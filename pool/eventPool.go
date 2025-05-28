@@ -8,6 +8,7 @@ import (
 
 	model "github.com/enki-polvo/polvo-logger/model"
 	eventModel "github.com/enki-polvo/polvo-logger/model/event"
+	stateConstants "github.com/enki-polvo/polvo-logger/model/state"
 )
 
 const (
@@ -50,14 +51,20 @@ var (
 			obj := &model.CommonModel{}
 			obj.CommonHeader.EventCode = model.TCP_EVENT
 			obj.CommonHeader.EventName = model.TCP_EVENT.String()
-			obj.Metadata = &eventModel.TcpMetadata{}
+			// Initialize the metadata Opcode for TCP events
+			obj.Metadata = &eventModel.TcpMetadata{
+				Op: stateConstants.TCP_OP_UNSET, // default value
+			}
 			return obj
 		},
 		model.FILE_EVENT: func() any {
 			obj := &model.CommonModel{}
 			obj.CommonHeader.EventCode = model.FILE_EVENT
 			obj.CommonHeader.EventName = model.FILE_EVENT.String()
-			obj.Metadata = &eventModel.FileMetadata{}
+			// Initialize the metadata Opcode for File events
+			obj.Metadata = &eventModel.FileMetadata{
+				Op: stateConstants.FILE_OP_UNSET, // default value
+			}
 			return obj
 		},
 	}

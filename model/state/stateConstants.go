@@ -20,8 +20,10 @@ const (
 type FileOp int
 
 const (
+	// default value for FileOp
+	FILE_OP_UNSET FileOp = iota
 	// File creation
-	FILE_CREATE FileOp = iota
+	FILE_CREATE
 	// File deletion
 	FILE_DELETE
 	// File read
@@ -36,8 +38,10 @@ const (
 type TcpOp int
 
 const (
+	// default value for TcpOp
+	TCP_OP_UNSET TcpOp = iota
 	// TCP connection establishment
-	TCP_CONNECT TcpOp = iota
+	TCP_CONNECT
 	// TCP connection termination
 	TCP_DISCONNECT
 	// TCP connection acceptance
