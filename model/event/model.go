@@ -65,24 +65,18 @@ type ServiceMetadata struct {
 	Commandline string `json:"Commandline"` // example: "bash rm -rf /tmp"
 }
 
-// TcpConnectMetadata defines the metadata structure for TCP connection events.
-type TcpConnectMetadata struct {
-	PID   int64  `json:"Pid"`   // example: 1234
+// TcpMetadata defines the metadata structure for TCP events.
+type TcpMetadata struct {
+	// process  relation
+	PID int64 `json:"Pid"` // example: 1234
+	// tcp info
 	DIP   string `json:"Dip"`   // example: "127.0.0.1"
 	Dport int64  `json:"Dport"` // example: 80
 	SIP   string `json:"Sip"`   // example: "127.0.0.1"
 	Sport int64  `json:"Sport"` // example: 80
 	Proto int64  `json:"Proto"` // example: 4
-}
-
-// TcpDisconnectMetadata defines the metadata structure for TCP disconnection events.
-type TcpDisconnectMetadata struct {
-	PID   int64  `json:"Pid"`   // example: 1234
-	DIP   string `json:"Dip"`   // example: "127.0.0.1"
-	Dport int64  `json:"Dport"` // example: 80
-	SIP   string `json:"Sip"`   // example: "127.0.0.1"
-	Sport int64  `json:"Sport"` // example: 80
-	Proto int64  `json:"Proto"` // example: 4
+	// tcp operation
+	Op state.TcpOp `json:"Op"` // example: "CONNECT" "DISCONNECT" "ACCEPT" etc..
 }
 
 // FileMetadata defines the metadata structure for file events.
@@ -125,16 +119,10 @@ type ServiceEvent struct {
 	Metadata ServiceMetadata `json:"metadata"`
 }
 
-// TcpConnectEvent defines the event structure for TCP connection events.
-type TcpConnectEvent struct {
+// TcpEvent defines the event structure for TCP events.
+type TcpEvent struct {
 	commonModel.CommonHeader
-	Metadata TcpConnectMetadata `json:"metadata"`
-}
-
-// TcpDisconnectEvent defines the event structure for TCP disconnection events.
-type TcpDisconnectEvent struct {
-	commonModel.CommonHeader
-	Metadata TcpDisconnectMetadata `json:"metadata"`
+	Metadata TcpMetadata `json:"metadata"`
 }
 
 // FileEvent defines the event structure for file events.

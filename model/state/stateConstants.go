@@ -31,3 +31,15 @@ const (
 	// File rename
 	FILE_RENAME
 )
+
+// TcpOp defines the TCP operation types.
+type TcpOp int
+
+const (
+	// TCP connection establishment
+	TCP_CONNECT TcpOp = iota
+	// TCP connection termination
+	TCP_DISCONNECT
+	// TCP connection acceptance
+	TCP_ACCEPT
+)
