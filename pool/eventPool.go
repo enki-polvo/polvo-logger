@@ -46,18 +46,11 @@ var (
 			obj.Metadata = &eventModel.ServiceMetadata{}
 			return obj
 		},
-		model.TCP_CONNECT: func() any {
+		model.TCP_EVENT: func() any {
 			obj := &model.CommonModel{}
-			obj.CommonHeader.EventCode = model.TCP_CONNECT
-			obj.CommonHeader.EventName = model.TCP_CONNECT.String()
-			obj.Metadata = &eventModel.TcpConnectMetadata{}
-			return obj
-		},
-		model.TCP_DISCONNECT: func() any {
-			obj := &model.CommonModel{}
-			obj.CommonHeader.EventCode = model.TCP_DISCONNECT
-			obj.CommonHeader.EventName = model.TCP_DISCONNECT.String()
-			obj.Metadata = &eventModel.TcpDisconnectMetadata{}
+			obj.CommonHeader.EventCode = model.TCP_EVENT
+			obj.CommonHeader.EventName = model.TCP_EVENT.String()
+			obj.Metadata = &eventModel.TcpMetadata{}
 			return obj
 		},
 		model.FILE_EVENT: func() any {

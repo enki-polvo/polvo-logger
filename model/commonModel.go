@@ -14,8 +14,7 @@ const (
 	PROC_TERMINATE
 	PROC_BASH_READLINE
 	PROC_SERVICE
-	TCP_CONNECT
-	TCP_DISCONNECT
+	TCP_EVENT
 	FILE_EVENT
 )
 
@@ -30,10 +29,8 @@ func (e EventCode) String() string {
 		return "BashReadline"
 	case PROC_SERVICE:
 		return "Service"
-	case TCP_CONNECT:
-		return "TcpConnect"
-	case TCP_DISCONNECT:
-		return "TcpDisconnect"
+	case TCP_EVENT:
+		return "TcpEVENT"
 	case FILE_EVENT:
 		return "FileEvent"
 	default:
