@@ -3,6 +3,8 @@ package commonModel
 
 import (
 	"time"
+
+	"github.com/go-viper/mapstructure/v2"
 )
 
 // EventCode defines the event code type.
@@ -40,7 +42,7 @@ func (e EventCode) String() string {
 
 // CommonHeader defines the common header structure for all events.
 type CommonHeader struct {
-	EventCode EventCode `json:"-"`         // example: 1
+	EventCode EventCode `json:"Eventcode"` // example: 1
 	EventName string    `json:"Eventname"` // example: "ProcessCreate"
 	Source    string    `json:"Source"`    // example: "eBPF"
 	Timestamp time.Time `json:"Timestamp"` // example: "2023-10-01T12:00:00Z"
@@ -50,4 +52,18 @@ type CommonHeader struct {
 type CommonModel struct {
 	CommonHeader
 	Metadata any `json:"metadata"`
+}
+
+// CommonModelWrapper is a wrapper for CommonModel that includes a Metadata field as map.
+// This is useful for decoding purposes, where the Metadata can be a map of any type.
+type CommonModelWrapper struct {
+	CommonHeader
+	Metadata map[string]any `json:"metadata"`
+}
+
+// Decode decodes the CommonModelWrapper into a CommonModel.
+// It uses mapstructure to decode the Metadata field into the appropriate structure.
+func (cmw *CommonModelWrapper) Decode(dest *CommonModel) (err error) {
+	err = mapstructure.Decode(cmw.Metadata, dest.Metadata)
+	return err
 }
