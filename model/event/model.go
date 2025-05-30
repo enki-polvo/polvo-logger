@@ -16,79 +16,79 @@ type Event any
 // ProcessCreateMetadata defines the metadata structure for process creation events.
 type ProcessCreateMetadata struct {
 	// process relation
-	PID  int64 `json:"Pid"`  // example: 1234
-	PPID int64 `json:"Ppid"` // example: 4
+	PID  int64 `json:"Pid" mapstructure:"Pid"`   // example: 1234
+	PPID int64 `json:"Ppid" mapstructure:"Ppid"` // example: 4
 
 	// user info
-	UID      int64  `json:"Uid"`      // example: 1000
-	Username string `json:"Username"` // example: "root"
-	TGID     int64  `json:"Tgid"`     // example: 1234
+	UID      int64  `json:"Uid" mapstructure:"Uid"`           // example: 1000
+	Username string `json:"Username" mapstructure:"Username"` // example: "root"
+	TGID     int64  `json:"Tgid" mapstructure:"Tgid"`         // example: 1234
 
 	// process info
-	Commandline string `json:"Commandline"` // example: "bash rm -rf /tmp"
-	ENV         string `json:"Env"`         // example: "PATH=/usr/bin:/bin"
-	Image       string `json:"Image"`       // example: "/usr/bin/bash"
+	Commandline string `json:"Commandline" mapstructure:"Commandline"` // example: "bash rm -rf /tmp"
+	ENV         string `json:"Env" mapstructure:"Env"`                 // example: "PATH=/usr/bin:/bin"
+	Image       string `json:"Image" mapstructure:"Image"`             // example: "/usr/bin/bash"
 }
 
 // ProcessTerminateMetadata defines the metadata structure for process termination events.
 type ProcessTerminateMetadata struct {
 	// process relation
-	PID int64 `json:"Pid"` // example: 1234
+	PID int64 `json:"Pid" mapstructure:"Pid"` // example: 1234
 
 	// process info
-	Ret int64 `json:"Ret"` // example: 0
+	Ret int64 `json:"Ret" mapstructure:"Ret"` // example: 0
 
 	// user info
-	UID      int64  `json:"Uid"`      // example: 1000
-	Username string `json:"Username"` // example: "root"
+	UID      int64  `json:"Uid" mapstructure:"Uid"`           // example: 1000
+	Username string `json:"Username" mapstructure:"Username"` // example: "root"
 }
 
 // BashReadlineMetadata defines the metadata structure for bash readline events.
 type BashReadlineMetadata struct {
 	// process relation
-	PID int64 `json:"Pid"` // example: 1234
+	PID int64 `json:"Pid" mapstructure:"Pid"` // example: 1234
 
 	// info
-	Commandline string `json:"Commandline"` // example: "bash rm -rf /tmp"
+	Commandline string `json:"Commandline" mapstructure:"Commandline"` // example: "bash rm -rf /tmp"
 
 	// user info
-	UID      int64  `json:"Uid"`      // example: 1000
-	Username string `json:"Username"` // example: "root"
+	UID      int64  `json:"Uid" mapstructure:"Uid"`           // example: 1000
+	Username string `json:"Username" mapstructure:"Username"` // example: "root"
 }
 
 // ServiceMetadata defines the metadata structure for service events.
 type ServiceMetadata struct {
-	PID         int64  `json:"Pid"`         // example: 1234
-	UID         int64  `json:"Uid"`         // example: 1000
-	TTY         string `json:"Tty"`         // example: "pts/0"
-	Image       string `json:"Image"`       // example: "/usr/bin/bash"
-	Commandline string `json:"Commandline"` // example: "bash rm -rf /tmp"
+	PID         int64  `json:"Pid" mapstructure:"Pid"`                 // example: 1234
+	UID         int64  `json:"Uid" mapstructure:"Uid"`                 // example: 1000
+	TTY         string `json:"Tty" mapstructure:"Tty"`                 // example: "pts/0"
+	Image       string `json:"Image" mapstructure:"Image"`             // example: "/usr/bin/bash"
+	Commandline string `json:"Commandline" mapstructure:"Commandline"` // example: "bash rm -rf /tmp"
 }
 
 // TcpMetadata defines the metadata structure for TCP events.
 type TcpMetadata struct {
 	// process  relation
-	PID int64 `json:"Pid"` // example: 1234
+	PID int64 `json:"Pid" mapstructure:"Pid"` // example: 1234
 	// tcp info
-	Daddr    string `json:"Daddr"`    // example: "127.0.0.1"
-	Dport    int64  `json:"Dport"`    // example: 80
-	Saddr    string `json:"Saddr"`    // example: "127.0.0.1"
-	Sport    int64  `json:"Sport"`    // example: 80
-	Protocol int64  `json:"Protocol"` // example: 4
+	Daddr    string `json:"Daddr" mapstructure:"Daddr"`       // example: "127.0.0.1"
+	Dport    int64  `json:"Dport" mapstructure:"Dport"`       // example: 80
+	Saddr    string `json:"Saddr" mapstructure:"Saddr"`       // example: "127.0.0.1"
+	Sport    int64  `json:"Sport" mapstructure:"Sport"`       // example: 80
+	Protocol int64  `json:"Protocol" mapstructure:"Protocol"` // example: 4
 	// tcp operation
-	Op state.TcpOp `json:"Op"` // example: "CONNECT" "DISCONNECT" "ACCEPT" etc..
+	Op state.TcpOp `json:"Op" mapstructure:"Op"` // example: "CONNECT" "DISCONNECT" "ACCEPT" etc..
 }
 
 // FileMetadata defines the metadata structure for file events.
 type FileMetadata struct {
 	// process relation
-	PID int64 `json:"Pid"` // example: 1234
-	UID int64 `json:"Uid"` // example: 1000
+	PID int64 `json:"Pid" mapstructure:"Pid"` // example: 1234
+	UID int64 `json:"Uid" mapstructure:"Uid"` // example: 1000
 	// file info
-	TargetFilename string `json:"TargetFilename"` // example: "/tmp/file.txt"
+	TargetFilename string `json:"TargetFilename" mapstructure:"TargetFilename"` // example: "/tmp/file.txt"
 	// file operation
-	Op   state.FileOp `json:"Op"`   // example: "READ" "RENAME" "WRITE" etc..
-	Mode uint64       `json:"Mode"` // example: 0
+	Op   state.FileOp `json:"Op" mapstructure:"Op"`     // example: "READ" "RENAME" "WRITE" etc..
+	Mode uint64       `json:"Mode" mapstructure:"Mode"` // example: 0
 }
 
 // --------------------------------------------------
