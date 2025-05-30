@@ -36,7 +36,7 @@ type ProcessTerminateMetadata struct {
 	PID int64 `json:"Pid"` // example: 1234
 
 	// process info
-	Ret int `json:"Ret"` // example: 0
+	Ret int64 `json:"Ret"` // example: 0
 
 	// user info
 	UID      int64  `json:"Uid"`      // example: 1000
