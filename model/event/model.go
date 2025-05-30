@@ -36,7 +36,7 @@ type ProcessTerminateMetadata struct {
 	PID int64 `json:"PID"` // example: 1234
 
 	// process info
-	Ret int64 `json:"Ret"` // example: 0
+	Ret int64 `json:"Ret" mapstructure:"Ret"` // example: 0
 
 	// user info
 	UID      int64  `json:"UID"`      // example: 1000
@@ -49,7 +49,7 @@ type BashReadlineMetadata struct {
 	PID int64 `json:"PID"` // example: 1234
 
 	// info
-	Commandline string `json:"Commandline"` // example: "bash rm -rf /tmp"
+	Commandline string `json:"Commandline" mapstructure:"Commandline"` // example: "bash rm -rf /tmp"
 
 	// user info
 	UID      int64  `json:"UID"`      // example: 1000
@@ -70,13 +70,13 @@ type TcpMetadata struct {
 	// process  relation
 	PID int64 `json:"PID"` // example: 1234
 	// tcp info
-	Daddr    string `json:"Daddr"`    // example: "127.0.0.1"
-	Dport    int64  `json:"Dport"`    // example: 80
-	Saddr    string `json:"Saddr"`    // example: "127.0.0.1"
-	Sport    int64  `json:"Sport"`    // example: 80
-	Protocol int64  `json:"Protocol"` // example: 4
+	Daddr    string `json:"Daddr" mapstructure:"Daddr"`       // example: "127.0.0.1"
+	Dport    int64  `json:"Dport" mapstructure:"Dport"`       // example: 80
+	Saddr    string `json:"Saddr" mapstructure:"Saddr"`       // example: "127.0.0.1"
+	Sport    int64  `json:"Sport" mapstructure:"Sport"`       // example: 80
+	Protocol int64  `json:"Protocol" mapstructure:"Protocol"` // example: 4
 	// tcp operation
-	Op state.TcpOp `json:"Op"` // example: "CONNECT" "DISCONNECT" "ACCEPT" etc..
+	Op state.TcpOp `json:"Op" mapstructure:"Op"` // example: "CONNECT" "DISCONNECT" "ACCEPT" etc..
 }
 
 // FileMetadata defines the Metadata structure for file events.
@@ -85,10 +85,10 @@ type FileMetadata struct {
 	PID int64 `json:"PID"` // example: 1234
 	UID int64 `json:"UID"` // example: 1000
 	// file info
-	TargetFilename string `json:"TargetFilename"` // example: "/tmp/file.txt"
+	TargetFilename string `json:"TargetFilename" mapstructure:"TargetFilename"` // example: "/tmp/file.txt"
 	// file operation
-	Op   state.FileOp `json:"Op"`   // example: "READ" "RENAME" "WRITE" etc..
-	Mode uint64       `json:"Mode"` // example: 0
+	Op   state.FileOp `json:"Op" mapstructure:"Op"`     // example: "READ" "RENAME" "WRITE" etc..
+	Mode uint64       `json:"Mode" mapstructure:"Mode"` // example: 0
 }
 
 // --------------------------------------------------
