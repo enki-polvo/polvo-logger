@@ -63,7 +63,7 @@ type CommonModelWrapper struct {
 
 // Decode decodes the CommonModelWrapper into a CommonModel.
 // It uses mapstructure to decode the Metadata field into the appropriate structure.
-func (cmw *CommonModelWrapper) Decode(dest *CommonModel) (err error) {
-	err = mapstructure.Decode(cmw.Metadata, dest.Metadata)
+func DecodeMetadata[T any](origin *CommonModelWrapper, dest *T) (err error) {
+	err = mapstructure.Decode(origin.Metadata, dest)
 	return err
 }
