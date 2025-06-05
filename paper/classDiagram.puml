@@ -1,0 +1,179 @@
+@startuml
+namespace commonModel {
+    class CommonHeader << (S,Aquamarine) >> {
+        + EventCode EventCode
+        + EventName string
+        + Source string
+        + Timestamp time.Time
+
+    }
+    class CommonModel << (S,Aquamarine) >> {
+        + Metadata any
+
+    }
+    class EventCode << (S,Aquamarine) >> {
+        + String() string
+
+    }
+    class commonModel.EventCode << (T, #FF7700) >>  {
+    }
+}
+"commonModel.CommonHeader" *-- "commonModel.CommonModel"
+
+
+namespace entityModel {
+    class CommonEntityModel << (S,Aquamarine) >> {
+        + EntityType EntityType
+        + State state.State
+        + MatchedRuleIDs string
+
+    }
+    class EntityType << (S,Aquamarine) >> {
+        + String() string
+
+    }
+    class NetworkEntityModel << (S,Aquamarine) >> {
+    }
+    class ProcessEntityModel << (S,Aquamarine) >> {
+    }
+    class entityModel.EntityType << (T, #FF7700) >>  {
+    }
+}
+"entityModel.CommonEntityModel" *-- "entityModel.NetworkEntityModel"
+"entityModel.CommonEntityModel" *-- "entityModel.ProcessEntityModel"
+
+
+namespace eventModel {
+    class BashReadlineEvent << (S,Aquamarine) >> {
+        + Metadata BashReadlineMetadata
+
+    }
+    class BashReadlineMetadata << (S,Aquamarine) >> {
+        + PID int64
+        + Commandline string
+        + UID int64
+        + Username string
+
+    }
+    class FileEvent << (S,Aquamarine) >> {
+        + Metadata FileMetadata
+
+    }
+    class FileMetadata << (S,Aquamarine) >> {
+        + PID int64
+        + UID int64
+        + TargetFilename string
+        + Op state.FileOp
+        + Mode uint64
+
+    }
+    class ProcessCreateEvent << (S,Aquamarine) >> {
+        + Metadata ProcessCreateMetadata
+
+    }
+    class ProcessCreateMetadata << (S,Aquamarine) >> {
+        + PID int64
+        + PPID int64
+        + UID int64
+        + Username string
+        + TGID int64
+        + Commandline string
+        + ENV string
+        + Image string
+
+    }
+    class ProcessTerminateEvent << (S,Aquamarine) >> {
+        + Metadata ProcessTerminateMetadata
+
+    }
+    class ProcessTerminateMetadata << (S,Aquamarine) >> {
+        + PID int64
+        + Ret int64
+        + UID int64
+        + Username string
+
+    }
+    class ServiceEvent << (S,Aquamarine) >> {
+        + Metadata ServiceMetadata
+
+    }
+    class ServiceMetadata << (S,Aquamarine) >> {
+        + PID int64
+        + UID int64
+        + TTY string
+        + Image string
+        + Commandline string
+
+    }
+    class TcpEvent << (S,Aquamarine) >> {
+        + Metadata TcpMetadata
+
+    }
+    class TcpMetadata << (S,Aquamarine) >> {
+        + PID int64
+        + Daddr string
+        + Dport int64
+        + Saddr string
+        + Sport int64
+        + Protocol int64
+        + Op state.TcpOp
+
+    }
+    class eventModel.Event << (T, #FF7700) >>  {
+    }
+}
+"model.CommonHeader" *-- "eventModel.BashReadlineEvent"
+"model.CommonHeader" *-- "eventModel.FileEvent"
+"model.CommonHeader" *-- "eventModel.ProcessCreateEvent"
+"model.CommonHeader" *-- "eventModel.ProcessTerminateEvent"
+"model.CommonHeader" *-- "eventModel.ServiceEvent"
+"model.CommonHeader" *-- "eventModel.TcpEvent"
+
+
+namespace eventPool {
+    interface Pool  {
+        + Allocate(eventName model.EventCode) (*model.CommonModel, error)
+        + Free(event event.Event) error
+
+    }
+    class eventPool << (S,Aquamarine) >> {
+        - eventPoolMap sync.Map
+        - size uint32
+
+        + Allocate(eventName model.EventCode) (*model.CommonModel, error)
+        + Free(event event.Event) error
+
+    }
+}
+
+"eventPool.Pool" <|-- "eventPool.eventPool"
+
+namespace logger {
+    class LogMessage << (S,Aquamarine) >> {
+        + EventName string
+        + Source string
+        + Timestamp string
+        + Log string
+        + Metadata <font color=blue>map</font>[string]any
+
+    }
+}
+
+
+namespace stateConstants {
+    class stateConstants.FileOp << (T, #FF7700) >>  {
+    }
+    class stateConstants.State << (T, #FF7700) >>  {
+    }
+    class stateConstants.TcpOp << (T, #FF7700) >>  {
+    }
+}
+
+
+"__builtin__.int" #.. "commonModel.EventCode"
+"__builtin__.int" #.. "entityModel.EntityType"
+"__builtin__.int" #.. "stateConstants.FileOp"
+"__builtin__.int" #.. "stateConstants.State"
+"__builtin__.int" #.. "stateConstants.TcpOp"
+"eventModel.any" #.. "eventModel.Event"
+@enduml
