@@ -57,14 +57,20 @@ var (
 			}
 			return obj
 		},
-		model.FILE_EVENT: func() any {
+		model.FILE_OPEN_EVENT: func() any {
 			obj := &model.CommonModel{}
-			obj.CommonHeader.EventCode = model.FILE_EVENT
-			obj.CommonHeader.EventName = model.FILE_EVENT.String()
-			// Initialize the metadata Opcode for File events
-			obj.Metadata = &eventModel.FileMetadata{
-				Op: stateConstants.FILE_OP_UNSET, // default value
+			obj.CommonHeader.EventCode = model.FILE_OPEN_EVENT
+			obj.CommonHeader.EventName = model.FILE_OPEN_EVENT.String()
+			// Initalize the metadata Opcode for File Open events
+			obj.Metadata = &eventModel.FileOpenMetadata{
+				FileOpenPurposeOp: stateConstants.FILE_OPEN_TO_UNSET, // default value
 			}
+			return obj
+		},
+		model.FILE_RENAME_EVENT: func() any {
+			obj := &model.CommonModel{}
+			obj.CommonHeader.EventCode = model.FILE_RENAME_EVENT
+			obj.CommonHeader.EventName = model.FILE_RENAME_EVENT.String()
 			return obj
 		},
 	}
