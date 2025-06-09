@@ -58,11 +58,12 @@ type CommonModel struct {
 // This is useful for decoding purposes, where the Metadata can be a map of any type.
 type CommonModelWrapper struct {
 	CommonHeader
-	Metadata map[string]any `json:"metadata"`
+	Metadata map[string]any `json:"Metadata"`
 }
 
 // Decode decodes the CommonModelWrapper into a CommonModel.
 // It uses mapstructure to decode the Metadata field into the appropriate structure.
+// Warning: This function does not return an error when attempting to decode with the wrong type due to limitations in mapstructure.
 func DecodeMetadataAs[T any](origin *CommonModelWrapper, dest *T) (err error) {
 	err = mapstructure.Decode(origin.Metadata, dest)
 	return err
