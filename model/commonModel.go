@@ -15,7 +15,8 @@ const (
 	PROC_BASH_READLINE
 	PROC_SERVICE
 	TCP_EVENT
-	FILE_EVENT
+	FILE_OPEN_EVENT
+	FILE_RENAME_EVENT
 )
 
 // EventCodeToString converts an EventCode to its string representation.
@@ -31,8 +32,10 @@ func (e EventCode) String() string {
 		return "Service"
 	case TCP_EVENT:
 		return "TcpEvent"
-	case FILE_EVENT:
-		return "FileEvent"
+	case FILE_OPEN_EVENT:
+		return "FileOpenEvent"
+	case FILE_RENAME_EVENT:
+		return "FileRenameEvent"
 	default:
 		return ""
 	}
