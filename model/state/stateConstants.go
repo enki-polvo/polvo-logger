@@ -16,6 +16,19 @@ const (
 	REUP
 )
 
+func (s State) String() string {
+	switch s {
+	case CREATED:
+		return "CREATED"
+	case MODIFIED:
+		return "MODIFIED"
+	case REUP:
+		return "REUP"
+	default:
+		return ""
+	}
+}
+
 // FileOpenPurposeOp defines the purposes of a specific file open operation
 type FileOpenPurposeOp int
 
@@ -30,6 +43,21 @@ const (
 	FILE_OPEN_TO_OTHER
 )
 
+func (f FileOpenPurposeOp) String() string {
+	switch f {
+	case FILE_OPEN_TO_UNSET:
+		return "FILE_OPEN_TO_UNSET"
+	case FILE_OPEN_TO_READ:
+		return "FILE_OPEN_TO_READ"
+	case FILE_OPEN_TO_WRITE:
+		return "FILE_OPEN_TO_WRITE"
+	case FILE_OPEN_TO_OTHER:
+		return "FILE_OPEN_TO_OTHER"
+	default:
+		return ""
+	}
+}
+
 // TcpOp defines the TCP operation types.
 type TcpOp int
 
@@ -43,3 +71,18 @@ const (
 	// TCP connection acceptance
 	TCP_ACCEPT
 )
+
+func (t TcpOp) String() string {
+	switch t {
+	case TCP_OP_UNSET:
+		return "TCP_OP_UNSET"
+	case TCP_CONNECT:
+		return "TCP_CONNECT"
+	case TCP_DISCONNECT:
+		return "TCP_DISCONNECT"
+	case TCP_ACCEPT:
+		return "TCP_ACCEPT"
+	default:
+		return ""
+	}
+}
