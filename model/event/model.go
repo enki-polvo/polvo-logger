@@ -61,51 +61,71 @@ type TcpMetadata struct {
 	Op       state.TcpOp `json:"Op" mapstructure:"Op"`             // example: "CONNECT" "DISCONNECT" "ACCEPT" etc..
 }
 
+// FileOpenMetadata defines the Metadata structure for file open events
+// for specific purposes (e.g., file opened to write data to it).
+type FileOpenMetadata struct {
+	PID               int64                   `json:"PID"`               // example: 8080
+	FileOpenerUID     int64                   `json:"FileOpenerUID"`     // example: 1200
+	FileOpenerGID     int64                   `json:"FileOpenerGID"`     // example: 1000
+	FileOwnerUID      int64                   `json:"FileOwnerUID"`      // example: 1200
+	FileOwnerGID      int64                   `json:"FileOwnerGID"`      // example: 1000
+	Mode              int64                   `json:"Mode"`              // example: 0444
+	Fmode             int64                   `json:"Fmode"`             // example: 0100644
+	FileOpenPurposeOp state.FileOpenPurposeOp `json:"FileOperationType"` // example: "FILE_OPEN_TO_WRITE"
+	Inode             int64                   `json:"Inode"`             // example: 17986650
+	Size              int64                   `json:"Size"`              // example: 1048576
+	ProcessName       string                  `json:"ProcessName"`       // example: "bash"
+	Path              string                  `json:"Path"`              // example: "/var/log/syslog"
+}
+
 // FileMetadata defines the Metadata structure for file events.
-type FileMetadata struct {
-	PID            int64        `json:"PID" mapstructure:"PID"`                       // example: 1234
-	UID            int64        `json:"UID" mapstructure:"UID"`                       // example: 1000
-	TargetFilename string       `json:"TargetFilename" mapstructure:"TargetFilename"` // example: "/tmp/file.txt"
-	Op             state.FileOp `json:"Op" mapstructure:"Op"`                         // example: "READ" "RENAME" "WRITE" etc..
-	Mode           uint64       `json:"Mode" mapstructure:"Mode"`                     // example: 0
+// It includes file open, close, and rename events.
+type FileRenameMetadata struct {
+	PID     int64  `json:"PID"`     // example: 8080
+	UID     int64  `json:"UID"`     // example: 1200
+	GID     int64  `json:"GID"`     // example: 1000
+	Command string `json:"Command"` // example: "mv"
+	OldPath string `json:"OldPath"` // example: "/var/log/syslog"
+	NewPath string `json:"NewPath"` // example: "/var/log/syslog.backup"
 }
 
 // --------------------------------------------------
 // System events Metadata
+//
+// They define the event structures for each type of event.
 // --------------------------------------------------
 
-// ProcessCreateEvent defines the event structure for process creation events.
 type ProcessCreateEvent struct {
 	commonModel.CommonHeader
 	Metadata ProcessCreateMetadata `json:"Metadata"`
 }
 
-// ProcessTerminateEvent defines the event structure for process termination events.
 type ProcessTerminateEvent struct {
 	commonModel.CommonHeader
 	Metadata ProcessTerminateMetadata `json:"Metadata"`
 }
 
-// BashReadlineEvent defines the event structure for bash readline events.
 type BashReadlineEvent struct {
 	commonModel.CommonHeader
 	Metadata BashReadlineMetadata `json:"Metadata"`
 }
 
-// ServiceEvent defines the event structure for service events.
 type ServiceEvent struct {
 	commonModel.CommonHeader
 	Metadata ServiceMetadata `json:"Metadata"`
 }
 
-// TcpEvent defines the event structure for TCP events.
 type TcpEvent struct {
 	commonModel.CommonHeader
 	Metadata TcpMetadata `json:"Metadata"`
 }
 
-// FileEvent defines the event structure for file events.
-type FileEvent struct {
+type FileOpenEvent struct {
 	commonModel.CommonHeader
-	Metadata FileMetadata `json:"Metadata"`
+	Metadata FileOpenMetadata `json:"Metadata"`
+}
+
+type FileRenameEvent struct {
+	commonModel.CommonHeader
+	Metadata FileRenameMetadata `json:"Metadata"`
 }
