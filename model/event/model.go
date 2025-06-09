@@ -72,7 +72,7 @@ type FileOpenMetadata struct {
 	Mode              int64                   `json:"Mode"`              // example: 0444
 	Fmode             int64                   `json:"Fmode"`             // example: 0100644
 	FileOpenPurposeOp state.FileOpenPurposeOp `json:"FileOperationType"` // example: "FILE_OPEN_TO_WRITE"
-	Indoe             int64                   `json:"Indoe"`             // example: 17986650
+	Inode             int64                   `json:"Inode"`             // example: 17986650
 	Size              int64                   `json:"Size"`              // example: 1048576
 	ProcessName       string                  `json:"ProcessName"`       // example: "bash"
 	Path              string                  `json:"Path"`              // example: "/var/log/syslog"

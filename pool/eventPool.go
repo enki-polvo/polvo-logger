@@ -61,7 +61,7 @@ var (
 			obj := &model.CommonModel{}
 			obj.CommonHeader.EventCode = model.FILE_OPEN_EVENT
 			obj.CommonHeader.EventName = model.FILE_OPEN_EVENT.String()
-			// Initalize the metadata Opcode for File Open events
+			// Initializes the metadata Opcode for File Open events
 			obj.Metadata = &eventModel.FileOpenMetadata{
 				FileOpenPurposeOp: stateConstants.FILE_OPEN_TO_UNSET, // default value
 			}
