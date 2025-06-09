@@ -15,16 +15,11 @@ type Event any
 
 // ProcessCreateMetadata defines the Metadata structure for process creation events.
 type ProcessCreateMetadata struct {
-	// process relation
-	PID  int64 `json:"PID"`  // example: 1234
-	PPID int64 `json:"PPID"` // example: 4
-
-	// user info
-	UID      int64  `json:"UID"`      // example: 1000
-	Username string `json:"Username"` // example: "root"
-	TGID     int64  `json:"TGID"`     // example: 1234
-
-	// process info
+	PID         int64  `json:"PID"`         // example: 1234
+	PPID        int64  `json:"PPID"`        // example: 4
+	UID         int64  `json:"UID"`         // example: 1000
+	Username    string `json:"Username"`    // example: "root"
+	TGID        int64  `json:"TGID"`        // example: 1234
 	Commandline string `json:"Commandline"` // example: "bash rm -rf /tmp"
 	ENV         string `json:"ENV"`         // example: "PATH=/usr/bin:/bin"
 	Image       string `json:"Image"`       // example: "/usr/bin/bash"
@@ -32,28 +27,18 @@ type ProcessCreateMetadata struct {
 
 // ProcessTerminateMetadata defines the Metadata structure for process termination events.
 type ProcessTerminateMetadata struct {
-	// process relation
-	PID int64 `json:"PID"` // example: 1234
-
-	// process info
-	Ret int64 `json:"Ret"` // example: 0
-
-	// user info
+	PID      int64  `json:"PID"`      // example: 1234
+	Ret      int64  `json:"Ret"`      // example: 0
 	UID      int64  `json:"UID"`      // example: 1000
 	Username string `json:"Username"` // example: "root"
 }
 
 // BashReadlineMetadata defines the Metadata structure for bash readline events.
 type BashReadlineMetadata struct {
-	// process relation
-	PID int64 `json:"PID"` // example: 1234
-
-	// info
+	PID         int64  `json:"PID"`         // example: 1234
 	Commandline string `json:"Commandline"` // example: "bash rm -rf /tmp"
-
-	// user info
-	UID      int64  `json:"UID"`      // example: 1000
-	Username string `json:"Username"` // example: "root"
+	UID         int64  `json:"UID"`         // example: 1000
+	Username    string `json:"Username"`    // example: "root"
 }
 
 // ServiceMetadata defines the Metadata structure for service events.
@@ -67,16 +52,13 @@ type ServiceMetadata struct {
 
 // TcpMetadata defines the Metadata structure for TCP events.
 type TcpMetadata struct {
-	// process  relation
-	PID int64 `json:"PID"` // example: 1234
-	// tcp info
-	Daddr    string `json:"Daddr"`    // example: "127.0.0.1"
-	Dport    int64  `json:"Dport"`    // example: 80
-	Saddr    string `json:"Saddr"`    // example: "127.0.0.1"
-	Sport    int64  `json:"Sport"`    // example: 80
-	Protocol int64  `json:"Protocol"` // example: 4
-	// tcp operation
-	Op state.TcpOp `json:"Op"` // example: "CONNECT" "DISCONNECT" "ACCEPT" etc..
+	PID      int64       `json:"PID"`      // example: 1234
+	Daddr    string      `json:"Daddr"`    // example: "127.0.0.1"
+	Dport    int64       `json:"Dport"`    // example: 80
+	Saddr    string      `json:"Saddr"`    // example: "127.0.0.1"
+	Sport    int64       `json:"Sport"`    // example: 80
+	Protocol int64       `json:"Protocol"` // example: 4
+	Op       state.TcpOp `json:"Op"`       // example: "CONNECT" "DISCONNECT" "ACCEPT" etc..
 }
 
 // FileOpenMetadata defines the Metadata structure for file open events
@@ -109,45 +91,40 @@ type FileRenameMetadata struct {
 
 // --------------------------------------------------
 // System events Metadata
+//
+// They define the event structures for each type of event.
 // --------------------------------------------------
 
-// ProcessCreateEvent defines the event structure for process creation events.
 type ProcessCreateEvent struct {
 	commonModel.CommonHeader
 	Metadata ProcessCreateMetadata `json:"Metadata"`
 }
 
-// ProcessTerminateEvent defines the event structure for process termination events.
 type ProcessTerminateEvent struct {
 	commonModel.CommonHeader
 	Metadata ProcessTerminateMetadata `json:"Metadata"`
 }
 
-// BashReadlineEvent defines the event structure for bash readline events.
 type BashReadlineEvent struct {
 	commonModel.CommonHeader
 	Metadata BashReadlineMetadata `json:"Metadata"`
 }
 
-// ServiceEvent defines the event structure for service events.
 type ServiceEvent struct {
 	commonModel.CommonHeader
 	Metadata ServiceMetadata `json:"Metadata"`
 }
 
-// TcpEvent defines the event structure for TCP events.
 type TcpEvent struct {
 	commonModel.CommonHeader
 	Metadata TcpMetadata `json:"Metadata"`
 }
 
-// FileRenameEvent defines the event structure for file rename events.
 type FileOpenEvent struct {
 	commonModel.CommonHeader
 	Metadata FileOpenMetadata `json:"Metadata"`
 }
 
-// FileRenameEvent defines the event structure for file rename events.
 type FileRenameEvent struct {
 	commonModel.CommonHeader
 	Metadata FileRenameMetadata `json:"Metadata"`
