@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/enki-polvo/polvo-logger/model"
-	"github.com/enki-polvo/polvo-logger/model/event"
+	commonModel "github.com/enki-polvo/polvo-logger/model"
+	eventModel "github.com/enki-polvo/polvo-logger/model/event"
 )
 
 func TestDecodeMetadata(t *testing.T) {
@@ -31,7 +31,7 @@ func TestDecodeMetadata(t *testing.T) {
 		},
 		Metadata: eventModel.ProcessCreateMetadata{},
 	}
-	err = commonModel.DecodeMetadataAs[eventModel.ProcessCreateMetadata](cmw, &dest.Metadata)
+	err = eventModel.DecodeMetadataAs[eventModel.ProcessCreateMetadata](cmw.Metadata, &dest.Metadata)
 	if err != nil {
 		t.Fatalf("Failed to decode metadata: %v", err)
 	}
@@ -59,7 +59,7 @@ func TestDecodeMetadataWithInvalidData(t *testing.T) {
 		},
 		Metadata: eventModel.ProcessCreateMetadata{},
 	}
-	err = commonModel.DecodeMetadataAs[eventModel.ProcessCreateMetadata](cmw, &dest.Metadata)
+	err = eventModel.DecodeMetadataAs[eventModel.ProcessCreateMetadata](cmw.Metadata, &dest.Metadata)
 	if err == nil {
 		t.Fatal("Expected an error due to invalid type, but got none")
 	}
@@ -86,7 +86,7 @@ func TestDecodeMetadataWithDifferentDataType(t *testing.T) {
 		},
 		Metadata: eventModel.ProcessTerminateMetadata{},
 	}
-	err = commonModel.DecodeMetadataAs[eventModel.ProcessTerminateMetadata](cmw, &dest.Metadata)
+	err = eventModel.DecodeMetadataAs[eventModel.ProcessTerminateMetadata](cmw.Metadata, &dest.Metadata)
 	if err != nil {
 		t.Fatalf("Failed to decode metadata: %v", err)
 	}

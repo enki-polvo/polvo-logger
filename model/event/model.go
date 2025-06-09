@@ -4,10 +4,15 @@ package eventModel
 import (
 	commonModel "github.com/enki-polvo/polvo-logger/model"
 	state "github.com/enki-polvo/polvo-logger/model/state"
+	"github.com/mitchellh/mapstructure"
 )
 
 // Event defines the interface for all event types.
 type Event any
+
+type Metadata interface {
+	ProcessCreateMetadata | ProcessTerminateMetadata | BashReadlineMetadata | ServiceMetadata | TcpMetadata | FileOpenMetadata | FileRenameMetadata
+}
 
 // --------------------------------------------------
 // Event Metadata
@@ -87,6 +92,14 @@ type FileRenameMetadata struct {
 	Command string `json:"Command" mapstructure:"Command"` // example: "mv"
 	OldPath string `json:"OldPath" mapstructure:"OldPath"` // example: "/var/log/syslog"
 	NewPath string `json:"NewPath" mapstructure:"NewPath"` // example: "/var/log/syslog.backup"
+}
+
+// DecodeMetadataAs decodes the map into a Metadata.
+// It uses mapstructure to decode the Metadata field into the appropriate structure.
+// Warning: This function does not return an error when attempting to decode with the wrong type due to limitations in mapstructure.
+func DecodeMetadataAs[T Metadata](origin map[string]any, dest *T) (err error) {
+	err = mapstructure.Decode(origin, dest)
+	return err
 }
 
 // --------------------------------------------------

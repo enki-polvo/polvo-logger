@@ -3,8 +3,6 @@ package commonModel
 
 import (
 	"time"
-
-	"github.com/mitchellh/mapstructure"
 )
 
 // EventCode defines the event code type.
@@ -45,7 +43,7 @@ func (e EventCode) String() string {
 
 // CommonHeader defines the common header structure for all events.
 type CommonHeader struct {
-	EventCode EventCode `json:"-"`         // example: 1
+	EventCode EventCode `json:"EventCode"` // example: 1
 	EventName string    `json:"EventName"` // example: "ProcessCreate"
 	Source    string    `json:"Source"`    // example: "eBPF"
 	Timestamp time.Time `json:"Timestamp"` // example: "2023-10-01T12:00:00Z"
@@ -62,12 +60,4 @@ type CommonModel struct {
 type CommonModelWrapper struct {
 	CommonHeader
 	Metadata map[string]any `json:"Metadata"`
-}
-
-// Decode decodes the CommonModelWrapper into a CommonModel.
-// It uses mapstructure to decode the Metadata field into the appropriate structure.
-// Warning: This function does not return an error when attempting to decode with the wrong type due to limitations in mapstructure.
-func DecodeMetadataAs[T any](origin *CommonModelWrapper, dest *T) (err error) {
-	err = mapstructure.Decode(origin.Metadata, dest)
-	return err
 }
