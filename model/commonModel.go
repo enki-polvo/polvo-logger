@@ -3,6 +3,8 @@ package commonModel
 
 import (
 	"time"
+
+	"github.com/mitchellh/mapstructure"
 )
 
 // EventCode defines the event code type.
@@ -50,7 +52,6 @@ type CommonHeader struct {
 type CommonModel struct {
 	CommonHeader
 	Metadata any `json:"Metadata"`
-	Metadata any `json:"metadata"`
 }
 
 // CommonModelWrapper is a wrapper for CommonModel that includes a Metadata field as map.
@@ -62,7 +63,7 @@ type CommonModelWrapper struct {
 
 // Decode decodes the CommonModelWrapper into a CommonModel.
 // It uses mapstructure to decode the Metadata field into the appropriate structure.
-func DecodeMetadata[T any](origin *CommonModelWrapper, dest *T) (err error) {
+func DecodeMetadataAs[T any](origin *CommonModelWrapper, dest *T) (err error) {
 	err = mapstructure.Decode(origin.Metadata, dest)
 	return err
 }
