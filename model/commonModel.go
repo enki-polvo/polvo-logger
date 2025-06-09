@@ -50,4 +50,19 @@ type CommonHeader struct {
 type CommonModel struct {
 	CommonHeader
 	Metadata any `json:"Metadata"`
+	Metadata any `json:"metadata"`
+}
+
+// CommonModelWrapper is a wrapper for CommonModel that includes a Metadata field as map.
+// This is useful for decoding purposes, where the Metadata can be a map of any type.
+type CommonModelWrapper struct {
+	CommonHeader
+	Metadata map[string]any `json:"metadata"`
+}
+
+// Decode decodes the CommonModelWrapper into a CommonModel.
+// It uses mapstructure to decode the Metadata field into the appropriate structure.
+func DecodeMetadata[T any](origin *CommonModelWrapper, dest *T) (err error) {
+	err = mapstructure.Decode(origin.Metadata, dest)
+	return err
 }
