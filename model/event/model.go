@@ -69,29 +69,32 @@ type TcpMetadata struct {
 // FileOpenMetadata defines the Metadata structure for file open events
 // for specific purposes (e.g., file opened to write data to it).
 type FileOpenMetadata struct {
-	PID               int64                   `json:"PID" mapstructure:"PID"`                             // example: 8080
-	FileOpenerUID     int64                   `json:"FileOpenerUID" mapstructure:"FileOpenerUID"`         // example: 1200
-	FileOpenerGID     int64                   `json:"FileOpenerGID" mapstructure:"FileOpenerGID"`         // example: 1000
-	FileOwnerUID      int64                   `json:"FileOwnerUID" mapstructure:"FileOwnerUID"`           // example: 1200
-	FileOwnerGID      int64                   `json:"FileOwnerGID" mapstructure:"FileOwnerGID"`           // example: 1000
-	Mode              int64                   `json:"Mode" mapstructure:"Mode"`                           // example: 0444
-	Fmode             int64                   `json:"Fmode" mapstructure:"Fmode"`                         // example: 0100644
-	FileOpenPurposeOp state.FileOpenPurposeOp `json:"FileOperationType" mapstructure:"FileOpenPurposeOp"` // example: "FILE_OPEN_TO_WRITE"
-	Inode             int64                   `json:"Inode" mapstructure:"Inode"`                         // example: 17986650
-	Size              int64                   `json:"Size" mapstructure:"Size"`                           // example: 1048576
-	ProcessName       string                  `json:"ProcessName" mapstructure:"ProcessName"`             // example: "bash"
-	Path              string                  `json:"Path" mapstructure:"Path"`                           // example: "/var/log/syslog"
+	PID                int64                   `json:"PID" mapstructure:"PID"`                               // example: 8080
+	FileOpenerUID      int64                   `json:"FileOpenerUID" mapstructure:"FileOpenerUID"`           // example: 1200
+	FileOpenerGID      int64                   `json:"FileOpenerGID" mapstructure:"FileOpenerGID"`           // example: 1000
+	FileOpenerUsername string                  `json:"FileOpenerUsername" mapstructure:"FileOpenerUsername"` // example: "root"
+	FileOwnerUID       int64                   `json:"FileOwnerUID" mapstructure:"FileOwnerUID"`             // example: 1200
+	FileOwnerGID       int64                   `json:"FileOwnerGID" mapstructure:"FileOwnerGID"`             // example: 1000
+	FileOwnerUsername  string                  `json:"FileOwnerUsername" mapstructure:"FileOwnerUsername"`   // example: "root"
+	Mode               int64                   `json:"Mode" mapstructure:"Mode"`                             // example: 0444
+	Fmode              int64                   `json:"Fmode" mapstructure:"Fmode"`                           // example: 0100644
+	FileOpenPurposeOp  state.FileOpenPurposeOp `json:"FileOperationType" mapstructure:"FileOpenPurposeOp"`   // example: "FILE_OPEN_TO_WRITE"
+	Inode              int64                   `json:"Inode" mapstructure:"Inode"`                           // example: 17986650
+	Size               int64                   `json:"Size" mapstructure:"Size"`                             // example: 1048576
+	ProcessName        string                  `json:"ProcessName" mapstructure:"ProcessName"`               // example: "bash"
+	Path               string                  `json:"Path" mapstructure:"Path"`                             // example: "/var/log/syslog"
 }
 
 // FileMetadata defines the Metadata structure for file events.
 // It includes file open, close, and rename events.
 type FileRenameMetadata struct {
-	PID     int64  `json:"PID" mapstructure:"PID"`         // example: 8080
-	UID     int64  `json:"UID" mapstructure:"UID"`         // example: 1200
-	GID     int64  `json:"GID" mapstructure:"GID"`         // example: 1000
-	Command string `json:"Command" mapstructure:"Command"` // example: "mv"
-	OldPath string `json:"OldPath" mapstructure:"OldPath"` // example: "/var/log/syslog"
-	NewPath string `json:"NewPath" mapstructure:"NewPath"` // example: "/var/log/syslog.backup"
+	PID      int64  `json:"PID" mapstructure:"PID"`           // example: 8080
+	UID      int64  `json:"UID" mapstructure:"UID"`           // example: 1200
+	GID      int64  `json:"GID" mapstructure:"GID"`           // example: 1000
+	Username string `json:"Username" mapstructure:"Username"` // example: "root"
+	Command  string `json:"Command" mapstructure:"Command"`   // example: "mv"
+	OldPath  string `json:"OldPath" mapstructure:"OldPath"`   // example: "/var/log/syslog"
+	NewPath  string `json:"NewPath" mapstructure:"NewPath"`   // example: "/var/log/syslog.backup"
 }
 
 // DecodeMetadataAs decodes the map into a Metadata.
