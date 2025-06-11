@@ -71,7 +71,7 @@ var (
 			obj := &model.CommonModel{}
 			obj.CommonHeader.EventCode = model.FILE_RENAME_EVENT
 			obj.CommonHeader.EventName = model.FILE_RENAME_EVENT.String()
-			obj.Metadata = &eventModel.ServiceMetadata{}
+			obj.Metadata = &eventModel.FileRenameMetadata{}
 			return obj
 		},
 	}
