@@ -43,7 +43,7 @@ func (e EventCode) String() string {
 
 // CommonHeader defines the common header structure for all events.
 type CommonHeader struct {
-	EventCode EventCode `json:"-"`         // example: 1
+	EventCode EventCode `json:"EventCode"` // example: 1
 	EventName string    `json:"EventName"` // example: "ProcessCreate"
 	Source    string    `json:"Source"`    // example: "eBPF"
 	Timestamp time.Time `json:"Timestamp"` // example: "2023-10-01T12:00:00Z"
@@ -53,4 +53,11 @@ type CommonHeader struct {
 type CommonModel struct {
 	CommonHeader
 	Metadata any `json:"Metadata"`
+}
+
+// CommonModelWrapper is a wrapper for CommonModel that includes a Metadata field as map.
+// This is useful for decoding purposes, where the Metadata can be a map of any type.
+type CommonModelWrapper struct {
+	CommonHeader
+	Metadata map[string]any `json:"Metadata"`
 }
