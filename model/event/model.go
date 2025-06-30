@@ -78,7 +78,7 @@ type FileOpenMetadata struct {
 	FileOwnerUsername  string                  `json:"FileOwnerUsername" mapstructure:"FileOwnerUsername"`   // example: "root"
 	Mode               int64                   `json:"Mode" mapstructure:"Mode"`                             // example: 0444
 	Fmode              int64                   `json:"Fmode" mapstructure:"Fmode"`                           // example: 0100644
-	FileOpenPurposeOp  state.FileOpenPurposeOp `json:"FileOperationType" mapstructure:"FileOpenPurposeOp"`   // example: "FILE_OPEN_TO_WRITE"
+	FileOpenPurposeOp  state.FileOpenPurposeOp `json:"FileOpenPurposeOp" mapstructure:"FileOpenPurposeOp"`   // example: "FILE_OPEN_TO_WRITE"
 	Inode              int64                   `json:"Inode" mapstructure:"Inode"`                           // example: 17986650
 	Size               int64                   `json:"Size" mapstructure:"Size"`                             // example: 1048576
 	ProcessName        string                  `json:"ProcessName" mapstructure:"ProcessName"`               // example: "bash"
