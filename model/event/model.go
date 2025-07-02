@@ -30,7 +30,7 @@ type ProcessExecveMetadata struct {
 	Image       string `json:"Image" mapstructure:"Image"`             // example: "/usr/bin/bash"
 }
 
-// ProcessTerminateMetadata defines the Metadata structure for process termination events.
+// ProcessExitMetadata defines the Metadata structure for process exit events.
 type ProcessExitMetadata struct {
 	PID      int64  `json:"PID" mapstructure:"PID"`           // example: 1234
 	Ret      int64  `json:"Ret" mapstructure:"Ret"`           // example: 0
