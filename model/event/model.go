@@ -11,15 +11,15 @@ import (
 type Event any
 
 type Metadata interface {
-	ProcessCreateMetadata | ProcessTerminateMetadata | BashReadlineMetadata | ServiceMetadata | TcpMetadata | FileOpenMetadata | FileRenameMetadata
+	ProcessExecveMetadata | ProcessTerminateMetadata | BashReadlineMetadata | ServiceMetadata | TcpMetadata | FileOpenMetadata | FileRenameMetadata
 }
 
 // --------------------------------------------------
 // Event Metadata
 // --------------------------------------------------
 
-// ProcessCreateMetadata defines the Metadata structure for process creation events.
-type ProcessCreateMetadata struct {
+// ProcessCreateMetadata defines the Metadata structure for process execve, execveat events.
+type ProcessExecveMetadata struct {
 	PID         int64  `json:"PID" mapstructure:"PID"`                 // example: 1234
 	PPID        int64  `json:"PPID" mapstructure:"PPID"`               // example: 4
 	UID         int64  `json:"UID" mapstructure:"UID"`                 // example: 1000
@@ -111,9 +111,9 @@ func DecodeMetadataAs[T Metadata](origin map[string]any, dest *T) (err error) {
 // They define the event structures for each type of event.
 // --------------------------------------------------
 
-type ProcessCreateEvent struct {
+type ProcessExecveEvent struct {
 	commonModel.CommonHeader
-	Metadata ProcessCreateMetadata `json:"Metadata"`
+	Metadata ProcessExecveMetadata `json:"Metadata"`
 }
 
 type ProcessTerminateEvent struct {

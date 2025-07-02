@@ -19,11 +19,11 @@ const (
 
 var (
 	modelMapper = map[model.EventCode]func() any{
-		model.PROC_CREATE: func() any {
+		model.PROC_EXECVE: func() any {
 			obj := &model.CommonModel{}
-			obj.CommonHeader.EventCode = model.PROC_CREATE
-			obj.CommonHeader.EventName = model.PROC_CREATE.String()
-			obj.Metadata = &eventModel.ProcessCreateMetadata{}
+			obj.CommonHeader.EventCode = model.PROC_EXECVE
+			obj.CommonHeader.EventName = model.PROC_EXECVE.String()
+			obj.Metadata = &eventModel.ProcessExecveMetadata{}
 			return obj
 		},
 		model.PROC_TERMINATE: func() any {
