@@ -11,7 +11,14 @@ import (
 type Event any
 
 type Metadata interface {
-	ProcessExecveMetadata | ProcessExitMetadata | BashReadlineMetadata | ServiceMetadata | TcpMetadata | FileOpenMetadata | FileRenameMetadata
+	ProcessForkMetadata |
+		ProcessExecveMetadata |
+		ProcessExitMetadata |
+		BashReadlineMetadata |
+		ServiceMetadata |
+		TcpMetadata |
+		FileOpenMetadata |
+		FileRenameMetadata
 }
 
 // --------------------------------------------------
