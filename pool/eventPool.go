@@ -26,11 +26,11 @@ var (
 			obj.Metadata = &eventModel.ProcessExecveMetadata{}
 			return obj
 		},
-		model.PROC_TERMINATE: func() any {
+		model.PROC_EXIT: func() any {
 			obj := &model.CommonModel{}
-			obj.CommonHeader.EventCode = model.PROC_TERMINATE
-			obj.CommonHeader.EventName = model.PROC_TERMINATE.String()
-			obj.Metadata = &eventModel.ProcessTerminateMetadata{}
+			obj.CommonHeader.EventCode = model.PROC_EXIT
+			obj.CommonHeader.EventName = model.PROC_EXIT.String()
+			obj.Metadata = &eventModel.ProcessExitMetadata{}
 			return obj
 		},
 		model.PROC_BASH_READLINE: func() any {

@@ -11,7 +11,7 @@ type EventCode int
 // Event codes
 const (
 	PROC_EXECVE EventCode = iota
-	PROC_TERMINATE
+	PROC_EXIT
 	PROC_BASH_READLINE
 	PROC_SERVICE
 	TCP_EVENT
@@ -24,8 +24,8 @@ func (e EventCode) String() string {
 	switch e {
 	case PROC_EXECVE:
 		return "ProcessExecve"
-	case PROC_TERMINATE:
-		return "ProcessTerminate"
+	case PROC_EXIT:
+		return "ProcessExit"
 	case PROC_BASH_READLINE:
 		return "BashReadline"
 	case PROC_SERVICE:

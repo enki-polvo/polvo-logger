@@ -78,15 +78,15 @@ func TestDecodeMetadataWithDifferentDataType(t *testing.T) {
 	}
 
 	// Create a destination struct for the metadata with a different type
-	dest := &eventModel.ProcessTerminateEvent{
+	dest := &eventModel.ProcessExitEvent{
 		CommonHeader: commonModel.CommonHeader{
 			EventName: cmw.EventName,
 			Source:    cmw.Source,
 			Timestamp: cmw.Timestamp,
 		},
-		Metadata: eventModel.ProcessTerminateMetadata{},
+		Metadata: eventModel.ProcessExitMetadata{},
 	}
-	err = eventModel.DecodeMetadataAs[eventModel.ProcessTerminateMetadata](cmw.Metadata, &dest.Metadata)
+	err = eventModel.DecodeMetadataAs[eventModel.ProcessExitMetadata](cmw.Metadata, &dest.Metadata)
 	if err != nil {
 		t.Fatalf("Failed to decode metadata: %v", err)
 	}

@@ -11,7 +11,7 @@ import (
 type Event any
 
 type Metadata interface {
-	ProcessExecveMetadata | ProcessTerminateMetadata | BashReadlineMetadata | ServiceMetadata | TcpMetadata | FileOpenMetadata | FileRenameMetadata
+	ProcessExecveMetadata | ProcessExitMetadata | BashReadlineMetadata | ServiceMetadata | TcpMetadata | FileOpenMetadata | FileRenameMetadata
 }
 
 // --------------------------------------------------
@@ -31,7 +31,7 @@ type ProcessExecveMetadata struct {
 }
 
 // ProcessTerminateMetadata defines the Metadata structure for process termination events.
-type ProcessTerminateMetadata struct {
+type ProcessExitMetadata struct {
 	PID      int64  `json:"PID" mapstructure:"PID"`           // example: 1234
 	Ret      int64  `json:"Ret" mapstructure:"Ret"`           // example: 0
 	UID      int64  `json:"UID" mapstructure:"UID"`           // example: 1000
@@ -116,9 +116,9 @@ type ProcessExecveEvent struct {
 	Metadata ProcessExecveMetadata `json:"Metadata"`
 }
 
-type ProcessTerminateEvent struct {
+type ProcessExitEvent struct {
 	commonModel.CommonHeader
-	Metadata ProcessTerminateMetadata `json:"Metadata"`
+	Metadata ProcessExitMetadata `json:"Metadata"`
 }
 
 type BashReadlineEvent struct {
