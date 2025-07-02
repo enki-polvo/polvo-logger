@@ -18,6 +18,16 @@ type Metadata interface {
 // Event Metadata
 // --------------------------------------------------
 
+// ProcessForkMetadata defines the Metadata structure for process fork events.
+type ProcessForkMetadata struct {
+	PID               int64  `json:"PID" mapstructure:"PID"`                             // example: 1234
+	PPID              int64  `json:"PPID" mapstructure:"PPID"`                           // example: 4
+	UID               int64  `json:"UID" mapstructure:"UID"`                             // example: 1000
+	Username          string `json:"Username" mapstructure:"Username"`                   // example: "root"
+	ParentCommandline string `json:"ParentCommandline" mapstructure:"ParentCommandline"` // example: "bash"
+	ChildCommandline  string `json:"ChildCommandline" mapstructure:"ChildCommandline"`   // example: "bash rm -rf /tmp"
+}
+
 // ProcessCreateMetadata defines the Metadata structure for process execve, execveat events.
 type ProcessExecveMetadata struct {
 	PID         int64  `json:"PID" mapstructure:"PID"`                 // example: 1234
@@ -110,6 +120,11 @@ func DecodeMetadataAs[T Metadata](origin map[string]any, dest *T) (err error) {
 //
 // They define the event structures for each type of event.
 // --------------------------------------------------
+
+type ProcessForkEvent struct {
+	commonModel.CommonHeader
+	Metadata ProcessForkMetadata `json:"Metadata"`
+}
 
 type ProcessExecveEvent struct {
 	commonModel.CommonHeader
