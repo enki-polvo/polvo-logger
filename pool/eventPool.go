@@ -19,18 +19,25 @@ const (
 
 var (
 	modelMapper = map[model.EventCode]func() any{
-		model.PROC_CREATE: func() any {
+		model.PROC_FORK: func() any {
 			obj := &model.CommonModel{}
-			obj.CommonHeader.EventCode = model.PROC_CREATE
-			obj.CommonHeader.EventName = model.PROC_CREATE.String()
-			obj.Metadata = &eventModel.ProcessCreateMetadata{}
+			obj.CommonHeader.EventCode = model.PROC_FORK
+			obj.CommonHeader.EventName = model.PROC_FORK.String()
+			obj.Metadata = &eventModel.ProcessForkMetadata{}
 			return obj
 		},
-		model.PROC_TERMINATE: func() any {
+		model.PROC_EXECVE: func() any {
 			obj := &model.CommonModel{}
-			obj.CommonHeader.EventCode = model.PROC_TERMINATE
-			obj.CommonHeader.EventName = model.PROC_TERMINATE.String()
-			obj.Metadata = &eventModel.ProcessTerminateMetadata{}
+			obj.CommonHeader.EventCode = model.PROC_EXECVE
+			obj.CommonHeader.EventName = model.PROC_EXECVE.String()
+			obj.Metadata = &eventModel.ProcessExecveMetadata{}
+			return obj
+		},
+		model.PROC_EXIT: func() any {
+			obj := &model.CommonModel{}
+			obj.CommonHeader.EventCode = model.PROC_EXIT
+			obj.CommonHeader.EventName = model.PROC_EXIT.String()
+			obj.Metadata = &eventModel.ProcessExitMetadata{}
 			return obj
 		},
 		model.PROC_BASH_READLINE: func() any {

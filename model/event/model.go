@@ -11,15 +11,32 @@ import (
 type Event any
 
 type Metadata interface {
-	ProcessCreateMetadata | ProcessTerminateMetadata | BashReadlineMetadata | ServiceMetadata | TcpMetadata | FileOpenMetadata | FileRenameMetadata
+	ProcessForkMetadata |
+		ProcessExecveMetadata |
+		ProcessExitMetadata |
+		BashReadlineMetadata |
+		ServiceMetadata |
+		TcpMetadata |
+		FileOpenMetadata |
+		FileRenameMetadata
 }
 
 // --------------------------------------------------
 // Event Metadata
 // --------------------------------------------------
 
-// ProcessCreateMetadata defines the Metadata structure for process creation events.
-type ProcessCreateMetadata struct {
+// ProcessForkMetadata defines the Metadata structure for process fork events.
+type ProcessForkMetadata struct {
+	PID               int64  `json:"PID" mapstructure:"PID"`                             // example: 1234
+	PPID              int64  `json:"PPID" mapstructure:"PPID"`                           // example: 4
+	UID               int64  `json:"UID" mapstructure:"UID"`                             // example: 1000
+	Username          string `json:"Username" mapstructure:"Username"`                   // example: "root"
+	ParentCommandline string `json:"ParentCommandline" mapstructure:"ParentCommandline"` // example: "bash"
+	ChildCommandline  string `json:"ChildCommandline" mapstructure:"ChildCommandline"`   // example: "bash rm -rf /tmp"
+}
+
+// ProcessCreateMetadata defines the Metadata structure for process execve, execveat events.
+type ProcessExecveMetadata struct {
 	PID         int64  `json:"PID" mapstructure:"PID"`                 // example: 1234
 	PPID        int64  `json:"PPID" mapstructure:"PPID"`               // example: 4
 	UID         int64  `json:"UID" mapstructure:"UID"`                 // example: 1000
@@ -30,8 +47,8 @@ type ProcessCreateMetadata struct {
 	Image       string `json:"Image" mapstructure:"Image"`             // example: "/usr/bin/bash"
 }
 
-// ProcessTerminateMetadata defines the Metadata structure for process termination events.
-type ProcessTerminateMetadata struct {
+// ProcessExitMetadata defines the Metadata structure for process exit events.
+type ProcessExitMetadata struct {
 	PID      int64  `json:"PID" mapstructure:"PID"`           // example: 1234
 	Ret      int64  `json:"Ret" mapstructure:"Ret"`           // example: 0
 	UID      int64  `json:"UID" mapstructure:"UID"`           // example: 1000
@@ -111,14 +128,19 @@ func DecodeMetadataAs[T Metadata](origin map[string]any, dest *T) (err error) {
 // They define the event structures for each type of event.
 // --------------------------------------------------
 
-type ProcessCreateEvent struct {
+type ProcessForkEvent struct {
 	commonModel.CommonHeader
-	Metadata ProcessCreateMetadata `json:"Metadata"`
+	Metadata ProcessForkMetadata `json:"Metadata"`
 }
 
-type ProcessTerminateEvent struct {
+type ProcessExecveEvent struct {
 	commonModel.CommonHeader
-	Metadata ProcessTerminateMetadata `json:"Metadata"`
+	Metadata ProcessExecveMetadata `json:"Metadata"`
+}
+
+type ProcessExitEvent struct {
+	commonModel.CommonHeader
+	Metadata ProcessExitMetadata `json:"Metadata"`
 }
 
 type BashReadlineEvent struct {

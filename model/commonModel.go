@@ -10,8 +10,9 @@ type EventCode int
 
 // Event codes
 const (
-	PROC_CREATE EventCode = iota
-	PROC_TERMINATE
+	PROC_FORK EventCode = iota
+	PROC_EXECVE
+	PROC_EXIT
 	PROC_BASH_READLINE
 	PROC_SERVICE
 	TCP_EVENT
@@ -22,10 +23,12 @@ const (
 // EventCodeToString converts an EventCode to its string representation.
 func (e EventCode) String() string {
 	switch e {
-	case PROC_CREATE:
-		return "ProcessCreate"
-	case PROC_TERMINATE:
-		return "ProcessTerminate"
+	case PROC_FORK:
+		return "ProcessFork"
+	case PROC_EXECVE:
+		return "ProcessExecve"
+	case PROC_EXIT:
+		return "ProcessExit"
 	case PROC_BASH_READLINE:
 		return "BashReadline"
 	case PROC_SERVICE:

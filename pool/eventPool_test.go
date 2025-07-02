@@ -23,7 +23,7 @@ func TestCreateNewPool(t *testing.T) {
 // Test that a valid event can be allocated from the pool
 func TestAllocateEvent(t *testing.T) {
 	pool := eventPool.NewEventPool()
-	eventCode := model.PROC_CREATE
+	eventCode := model.PROC_EXECVE
 
 	event, err := pool.Allocate(eventCode)
 	if err != nil {
@@ -38,7 +38,7 @@ func TestAllocateEvent(t *testing.T) {
 		t.Fatalf("Allocated event code does not match expected code: got %v, want %v", event.EventCode, eventCode)
 	}
 
-	metadata, ok := event.Metadata.(*eventModel.ProcessCreateMetadata)
+	metadata, ok := event.Metadata.(*eventModel.ProcessExecveMetadata)
 	if !ok {
 		t.Fatalf("Allocated event is not of type ProcessCreateEvent")
 	}
@@ -81,7 +81,7 @@ func TestAllocateInvalidEvent(t *testing.T) {
 // Test that a valid event can be freed back to the pool
 func TestFreeEvent(t *testing.T) {
 	pool := eventPool.NewEventPool()
-	eventCode := model.PROC_CREATE
+	eventCode := model.PROC_EXECVE
 
 	event, err := pool.Allocate(eventCode)
 	if err != nil {
@@ -116,7 +116,7 @@ func TestFreeEvent(t *testing.T) {
 // This test checks the performance of allocating and freeing events in a loop
 func TestStressTestAllocateFree(t *testing.T) {
 	pool := eventPool.NewEventPool()
-	eventCode := model.PROC_CREATE
+	eventCode := model.PROC_EXECVE
 
 	for i := 0; i < 1000; i++ {
 		event, err := pool.Allocate(eventCode)
@@ -159,7 +159,7 @@ func TestStressTestAllocateInvalidEvent(t *testing.T) {
 // and ensures that it returns an error
 func TestStressTestMultipleGoroutines(t *testing.T) {
 	pool := eventPool.NewEventPool()
-	eventCode := model.PROC_CREATE
+	eventCode := model.PROC_EXECVE
 
 	var wg sync.WaitGroup
 	var errChan chan error
