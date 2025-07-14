@@ -1,3 +1,6 @@
+//go:build linux
+// +build linux
+
 // event/model.go
 package eventModel
 

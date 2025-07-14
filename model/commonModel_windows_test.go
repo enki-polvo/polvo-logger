@@ -1,3 +1,6 @@
+//go:build windows
+// +build windows
+
 package commonModel_test
 
 import (
@@ -23,15 +26,15 @@ func TestDecodeMetadata(t *testing.T) {
 	}
 	// t.Logf("Decoded CommonModelWrapper: %+v", cmw)
 	// Create a destination struct for the metadata
-	dest := &eventModel.ProcessExecveEvent{
+	dest := &eventModel.ProcessCreationEvent{
 		CommonHeader: commonModel.CommonHeader{
 			EventName: cmw.EventName,
 			Source:    cmw.Source,
 			Timestamp: cmw.Timestamp,
 		},
-		Metadata: eventModel.ProcessExecveMetadata{},
+		Metadata: eventModel.ProcessCreationMetadata{},
 	}
-	err = eventModel.DecodeMetadataAs[eventModel.ProcessExecveMetadata](cmw.Metadata, &dest.Metadata)
+	err = eventModel.DecodeMetadataAs[eventModel.ProcessCreationMetadata](cmw.Metadata, &dest.Metadata)
 	if err != nil {
 		t.Fatalf("Failed to decode metadata: %v", err)
 	}
@@ -51,15 +54,15 @@ func TestDecodeMetadataWithInvalidData(t *testing.T) {
 	}
 
 	// Attempt to decode into a specific type that expects a different structure
-	dest := &eventModel.ProcessExecveEvent{
+	dest := &eventModel.ProcessCreationEvent{
 		CommonHeader: commonModel.CommonHeader{
 			EventName: cmw.EventName,
 			Source:    cmw.Source,
 			Timestamp: cmw.Timestamp,
 		},
-		Metadata: eventModel.ProcessExecveMetadata{},
+		Metadata: eventModel.ProcessCreationMetadata{},
 	}
-	err = eventModel.DecodeMetadataAs[eventModel.ProcessExecveMetadata](cmw.Metadata, &dest.Metadata)
+	err = eventModel.DecodeMetadataAs[eventModel.ProcessCreationMetadata](cmw.Metadata, &dest.Metadata)
 	if err == nil {
 		t.Fatal("Expected an error due to invalid type, but got none")
 	}
@@ -78,15 +81,15 @@ func TestDecodeMetadataWithDifferentDataType(t *testing.T) {
 	}
 
 	// Create a destination struct for the metadata with a different type
-	dest := &eventModel.ProcessExitEvent{
+	dest := &eventModel.ProcessTerminatedEvent{
 		CommonHeader: commonModel.CommonHeader{
 			EventName: cmw.EventName,
 			Source:    cmw.Source,
 			Timestamp: cmw.Timestamp,
 		},
-		Metadata: eventModel.ProcessExitMetadata{},
+		Metadata: eventModel.ProcessTerminatedMetadata{},
 	}
-	err = eventModel.DecodeMetadataAs[eventModel.ProcessExitMetadata](cmw.Metadata, &dest.Metadata)
+	err = eventModel.DecodeMetadataAs[eventModel.ProcessTerminatedMetadata](cmw.Metadata, &dest.Metadata)
 	if err != nil {
 		t.Fatalf("Failed to decode metadata: %v", err)
 	}
