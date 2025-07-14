@@ -1,3 +1,6 @@
+//go:build linux
+// +build linux
+
 // pool/eventPool.go
 
 package eventPool
