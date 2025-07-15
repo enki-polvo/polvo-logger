@@ -162,8 +162,10 @@ func TestStressTestMultipleGoroutines(t *testing.T) {
 	pool := eventPool.NewEventPool()
 	eventCode := model.PROCESS_CREATION
 
-	var wg sync.WaitGroup
-	var errChan chan error
+	var (
+		wg sync.WaitGroup
+		errChan chan error
+	)
 
 	errChan = make(chan error, 10)
 	defer close(errChan)
@@ -208,8 +210,11 @@ func TestStressTestInvalidInMultipleGoroutines(t *testing.T) {
 	pool := eventPool.NewEventPool()
 	invalidEventCode := model.EventCode(999) // Assuming 999 is not a valid event code
 
-	var wg sync.WaitGroup
-	var errChan chan error
+	var (
+		wg sync.WaitGroup
+		errChan chan error
+	)
+	
 	errChan = make(chan error, 10)
 	defer close(errChan)
 
