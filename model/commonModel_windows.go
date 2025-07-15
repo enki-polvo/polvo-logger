@@ -14,18 +14,19 @@ type EventCode int
 // Event codes
 const (
 	PROCESS_CREATION EventCode = iota
+	PROCESS_ACCESS
+	PROCESS_TERMINATED
 	NETWORK_CONNECTION
+	DNS_QUERY
 	DRIVER_LOAD
 	IMAGE_LOAD
-	PROCESS_ACCESS
 	FILE_EVENT
+	FILE_DELETE
 	REGISTRY_ADD
 	REGISTRY_DELETE
 	REGISTRY_SET
 	REGISTRY_EVENT
 	CREATE_STREAM_HASH
-	DNS_QUERY
-	FILE_DELETE
 )
 
 // EventCodeToString converts an EventCode to its string representation.
@@ -33,16 +34,22 @@ func (e EventCode) String() string {
 	switch e {
 	case PROCESS_CREATION:
 		return "process_creation"
+	case PROCESS_ACCESS:
+		return "process_access"
+	case PROCESS_TERMINATED:
+		return "process_terminated"
 	case NETWORK_CONNECTION:
 		return "network_connection"
+	case DNS_QUERY:
+		return "dns_query"
 	case DRIVER_LOAD:
 		return "driver_load"
 	case IMAGE_LOAD:
 		return "image_load"
-	case PROCESS_ACCESS:
-		return "process_access"
 	case FILE_EVENT:
 		return "file_event"
+	case FILE_DELETE:
+		return "file_delete"
 	case REGISTRY_ADD:
 		return "registry_add"
 	case REGISTRY_DELETE:
@@ -53,10 +60,6 @@ func (e EventCode) String() string {
 		return "registry_event"
 	case CREATE_STREAM_HASH:
 		return "create_stream_hash"
-	case DNS_QUERY:
-		return "dns_query"
-	case FILE_DELETE:
-		return "file_delete"
 	default:
 		return "UnknownEvent"
 	}
