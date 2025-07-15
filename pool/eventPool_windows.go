@@ -85,10 +85,10 @@ var (
 			obj.Metadata = &eventModel.RegistrySetMetadata{}
 			return obj
 		},
-		model.REGISTRY_EVENT: func() any {
+		model.REGISTRY_RENAME: func() any {
 			obj := &model.CommonModel{}
-			obj.CommonHeader.EventCode = model.REGISTRY_EVENT
-			obj.CommonHeader.EventName = model.REGISTRY_EVENT.String()
+			obj.CommonHeader.EventCode = model.REGISTRY_RENAME
+			obj.CommonHeader.EventName = model.REGISTRY_RENAME.String()
 			obj.Metadata = &eventModel.RegistryEventMetadata{}
 			return obj
 		},

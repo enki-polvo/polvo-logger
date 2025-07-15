@@ -21,12 +21,12 @@ const (
 	DRIVER_LOAD
 	IMAGE_LOAD
 	FILE_EVENT
+	CREATE_STREAM_HASH
 	FILE_DELETE
 	REGISTRY_ADD
 	REGISTRY_DELETE
 	REGISTRY_SET
-	REGISTRY_EVENT
-	CREATE_STREAM_HASH
+	REGISTRY_RENAME
 )
 
 // EventCodeToString converts an EventCode to its string representation.
@@ -56,8 +56,8 @@ func (e EventCode) String() string {
 		return "registry_delete"
 	case REGISTRY_SET:
 		return "registry_set"
-	case REGISTRY_EVENT:
-		return "registry_event"
+	case REGISTRY_RENAME:
+		return "registry_rename"
 	case CREATE_STREAM_HASH:
 		return "create_stream_hash"
 	default:
